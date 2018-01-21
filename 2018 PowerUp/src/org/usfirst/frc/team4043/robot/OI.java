@@ -22,6 +22,7 @@ public class OI {
 	// Joystick stick = new Joystick(port);
 	// Button button = new JoystickButton(stick, buttonNumber);
 
+	//Zoe was here 
 	// There are a few additional built in buttons you can use. Additionally,
 	// by subclassing Button you can create custom triggers and bind those to
 	// commands the same as any other Button.
@@ -30,6 +31,7 @@ public class OI {
 	// Once you have a button, it's trivial to bind it to a button in one of
 	// three ways:
 
+	//Zoe was here
 	// Start the command when the button is pressed and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenPressed(new ExampleCommand());
