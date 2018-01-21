@@ -26,7 +26,7 @@ public class RobotMap {
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
 	
-	public static WPI_TalonSRX motorFR = new WPI_TalonSRX(4);
+	public static WPI_TalonSRX motorFR = new WPI_TalonSRX(1);
 	public static WPI_TalonSRX motorFL = new WPI_TalonSRX(6);
 	public static WPI_TalonSRX motorBR = new WPI_TalonSRX(5);
 	public static WPI_TalonSRX motorBL = new WPI_TalonSRX(7);
