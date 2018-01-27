@@ -47,10 +47,16 @@ public class OI {
 	public Joystick driveStick = new Joystick(0);
 	public Button yeetStart = new JoyStickButton(0, 1);
 	public Button intakeStart  = new JoyStickButton(0, 2);
+	public Button evelatorUp = new JoystickButton(0, 3);
+	public Button evelatorDown = new JoystickButton(0, 4);
 	
 	public OI() {
 		intakeStart.whenPressed(new SuckIn());
 		yeetStart.whenPressed(new SpitOut());
+	
+		evelatorUp.whenPressed(new EvelatorUp());
+		evelatorDown.whenPressed(new EvelatorDown());
+		
 	}
 	
 	public Joystick getDriveStick() {
