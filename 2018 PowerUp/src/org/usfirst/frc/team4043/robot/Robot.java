@@ -9,6 +9,7 @@ package org.usfirst.frc.team4043.robot;
 
 import org.usfirst.frc.team4043.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4043.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4043.robot.subsystems.Evelator;
 import org.usfirst.frc.team4043.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4043.robot.subsystems.Intake;
 
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 	public static DriveTrain driveTrain;
 	public static Intake intake;
+	public static Evelator evelator;
 	AHRS ahrs;
 
 	Command m_autonomousCommand;
@@ -50,6 +52,7 @@ public class Robot extends TimedRobot {
 		driveTrain = new DriveTrain();
 		ahrs = new AHRS(SPI.Port.kMXP);
 		intake = new Intake();
+		evelator = new Evelator();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
