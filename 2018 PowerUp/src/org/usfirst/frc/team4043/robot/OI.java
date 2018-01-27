@@ -7,7 +7,14 @@
 
 package org.usfirst.frc.team4043.robot;
 
+import org.usfirst.frc.team4043.robot.commands.EvelatorDown;
+import org.usfirst.frc.team4043.robot.commands.EvelatorUp;
+import org.usfirst.frc.team4043.robot.commands.SpitOut;
+import org.usfirst.frc.team4043.robot.commands.SuckIn;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -45,10 +52,10 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 	public Joystick driveStick = new Joystick(0);
-	public Button yeetStart = new JoyStickButton(0, 1);
-	public Button intakeStart  = new JoyStickButton(0, 2);
-	public Button evelatorUp = new JoystickButton(0, 3);
-	public Button evelatorDown = new JoystickButton(0, 4);
+	public Button yeetStart = new JoystickButton(driveStick, 1);
+	public Button intakeStart  = new JoystickButton(driveStick, 2);
+	public Button evelatorUp = new JoystickButton(driveStick, 3);
+	public Button evelatorDown = new JoystickButton(driveStick, 4);
 	
 	public OI() {
 		intakeStart.whenPressed(new SuckIn());
