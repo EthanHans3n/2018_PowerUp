@@ -45,7 +45,8 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 	public Joystick driveStick = new Joystick(0);
-	public Button intakeStart  = new JoyStickButton(0, 1);
+	public Button Yeet = new JoyStickButton(0, 1);
+	public Button intakeStart  = new JoyStickButton(0, 2);
 	public Joystick getDriveStick() {
 		return driveStick;
 	}
