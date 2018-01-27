@@ -18,6 +18,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -114,6 +115,93 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		
 		System.out.println(RobotMap.motorFR.getSelectedSensorPosition(0));
+	}
+	
+	public double turnToAngle(double wantedAngle){
+		double currentAngle = ahrs.getAngle();
+		double rotateSpeed;
+		
+		if (currentAngle > wantedAngle + 2) {
+			rotateSpeed = (wantedAngle - currentAngle) / 10;
+		} else if (currentAngle < wantedAngle - 2) {
+			rotateSpeed = (wantedAngle - currentAngle) / 10;
+		} else {
+			rotateSpeed = 0d;
+		}
+		
+		if (rotateSpeed > 1) {
+			rotateSpeed = 1;
+		} else if (rotateSpeed < -1) {
+			rotateSpeed = -1;
+		} else if (rotateSpeed < .1 && rotateSpeed > 0) {
+			rotateSpeed = .1;
+		} else if (rotateSpeed > -.1 && rotateSpeed < 0) {
+			rotateSpeed = -.1;
+		}
+		
+		return rotateSpeed;
+	}
+	
+	public double driveToFeet(double wantedDistance) {
+		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double driveSpeed;
+		
+		if (currentDistance < wantedDistance) {
+			driveSpeed = (wantedDistance - currentDistance) / 50;
+		} else {
+			driveSpeed = 0d;
+		}
+		
+		return driveSpeed;
+	}
+	
+	public double backToFeet(double wantedDistance) {
+		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double driveSpeed;
+		
+		if (currentDistance > wantedDistance) {
+			driveSpeed = (wantedDistance - currentDistance) / 50;
+		} else {
+			driveSpeed = 0d;
+		}
+		
+		return driveSpeed;
+	}
+	
+	public void ds1L() {
+		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentAngle;
+		int state = 0;
+		double time = 0;
+		
+		if (state == 1) {
+			if (currentDistance < 140 /12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(140/12), turnToAngle(0));
+				evelator.elevatorUP();
+			} else {
+				state = 1;
+				time = Timer.getFPGATimestamp();
+			}
+		} else if (state == 2) {
+			if (Timer.getFPGATimestamp() < time + .4) {
+				intake.startYeet();
+			} else {
+				state = 3;
+				time = Timer.getFPGATimestamp();
+			}
+		} else if (state == 3) {
+			if (currentDistance > 130 /12) {
+				evelator.elevatorDOWN();
+				driveTrain.drive.arcadeDrive(backToFeet(130 / 12), turnToAngle(0));
+			} else {
+				state = 4;
+			}
+		} else if (state == 4) {
+			currentAngle = ahrs.getAngle();
+			if (currentAngle > -90) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
+			}
+		}
 	}
 
 	@Override
