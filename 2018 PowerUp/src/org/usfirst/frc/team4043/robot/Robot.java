@@ -10,6 +10,7 @@ package org.usfirst.frc.team4043.robot;
 import org.usfirst.frc.team4043.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4043.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4043.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team4043.robot.subsystems.Intake;
 
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.kauailabs.navx.frc.AHRS;
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
 			= new ExampleSubsystem();
 	public static OI m_oi;
 	public static DriveTrain driveTrain;
+	public static Intake intake;
 	AHRS ahrs;
 
 	Command m_autonomousCommand;
@@ -47,6 +49,7 @@ public class Robot extends TimedRobot {
 		m_oi = new OI();
 		driveTrain = new DriveTrain();
 		ahrs = new AHRS(SPI.Port.kMXP);
+		intake = new Intake();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
