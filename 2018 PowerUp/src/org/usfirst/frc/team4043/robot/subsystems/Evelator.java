@@ -12,8 +12,13 @@ public class Evelator extends Subsystem {
     public void elevatorUP() {
       RobotMap.evelator.set(0.3);   
     }
+  
+    public void elevatorDOWN() {
+      RobotMap.evelator.set(-0.25);
+    }
     
     public void initDefaultCommand() {
+      
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
