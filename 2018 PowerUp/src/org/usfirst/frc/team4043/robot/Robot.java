@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
 	public static Intake intake;
 	public static Evelator evelator;
 	AHRS ahrs;
+	int state = 1;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -171,7 +172,6 @@ public class Robot extends TimedRobot {
 	public void ds1L() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle;
-		int state = 0;
 		double time = 0;
 		
 		if (state == 1) {
@@ -179,7 +179,7 @@ public class Robot extends TimedRobot {
 				driveTrain.drive.arcadeDrive(driveToFeet(140/12), turnToAngle(0));
 				evelator.elevatorUP();
 			} else {
-				state = 1;
+				state = 2;
 				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 2) {
