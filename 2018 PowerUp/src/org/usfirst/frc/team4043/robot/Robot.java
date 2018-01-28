@@ -113,32 +113,34 @@ public class Robot extends TimedRobot {
 		System.out.println(RobotMap.motorFR.getSelectedSensorPosition(0));
 	}
 	
-	public double turnToAngle(double wantedAngle){
-		double currentAngle = ahrs.getAngle();
+	
+	public double turnToAngle(double wantedAngle){ //Takes in a wanted angle and returns the turnSpeed to get there
+		double currentAngle = ahrs.getAngle(); //In order to determine where we are, take in the current gyro value from the navx
 		double rotateSpeed;
 		
-		if (currentAngle > wantedAngle + 2) {
-			rotateSpeed = (wantedAngle - currentAngle) / 10;
-		} else if (currentAngle < wantedAngle - 2) {
-			rotateSpeed = (wantedAngle - currentAngle) / 10;
-		} else {
-			rotateSpeed = 0d;
+		if (currentAngle > wantedAngle + 2) { 					//If we are too far to the right of where we want to be...
+			rotateSpeed = (wantedAngle - currentAngle) / 20;	//turn left (negative number)
+		} else if (currentAngle < wantedAngle - 2) {			//Otherwise, if we are too far left ...
+			rotateSpeed = (wantedAngle - currentAngle) / 20;	//turn right (positive number)
+		} else {												//If we are right on track ...
+			rotateSpeed = 0d;									//don't rotate
 		}
 		
-		if (rotateSpeed > 1) {
+		//Just sanity checks for our output. Turning for arcade drive has to be between -1 and 1
+		if (rotateSpeed > 1) {												
 			rotateSpeed = 1;
 		} else if (rotateSpeed < -1) {
 			rotateSpeed = -1;
-		} else if (rotateSpeed < .1 && rotateSpeed > 0) {
+		} else if (rotateSpeed < .1 && rotateSpeed > 0) {		//Checks for a value small enough that it won't turn the robot
 			rotateSpeed = .1;
-		} else if (rotateSpeed > -.1 && rotateSpeed < 0) {
+		} else if (rotateSpeed > -.1 && rotateSpeed < 0) {		//Checks for a value small enough that it won't turn the robot
 			rotateSpeed = -.1;
 		}
 		
 		return rotateSpeed;
 	}
 	
-	public double driveToFeet(double wantedDistance) {
+	public double driveToFeet(double wantedDistance) { 
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double driveSpeed;
 		
