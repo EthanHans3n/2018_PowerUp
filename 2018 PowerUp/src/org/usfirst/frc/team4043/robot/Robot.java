@@ -258,7 +258,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void ds2L() {
-	double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		double time = 0;
 	
@@ -330,7 +330,21 @@ public class Robot extends TimedRobot {
 				state = 9;
 			}
 		}
-	}		
+	}
+	
+	public void ds1cross() {
+		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentAngle = ahrs.getAngle();
+		double time = 0;
+		
+		if (state == 1) {
+			if (currentDistance < 70 / 12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
+			} else {
+				state = 2;
+			}
+		}
+	}
 	
 	@Override
 	public void teleopInit() {
