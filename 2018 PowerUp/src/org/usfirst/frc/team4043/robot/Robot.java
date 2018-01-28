@@ -337,29 +337,38 @@ public class Robot extends TimedRobot {
 		double currentAngle = ahrs.getAngle();
 		double time = 0;
 
-			}
-		else if (state == 1) {
-			if (currentAngle > -45);
-				driveTrain.drive.arcadeDrive ( , turnToAngle(-45));
+		if (state == 1) {
+			if (currentDistance < 10) { //if the robot hasn't crossed the auto line 
+				driveTrain.drive.arcadeDrive(driveToFeet(2), turnToAngle(0)); //drive 2 feet forward
 			} else {
 				state = 2;
-		
-		if (state == 2) {
-			if (currentDistance < 15) {
-				driveTrain.drive.arcadeDrive(driveToFeet(15), turnToAngle(0));
+			}
+		} else if (state == 2) {
+			if (currentAngle != -30){ //if the angle is not -30
+				driveTrain.drive.arcadeDrive(0, turnToAngle(-30)); //turn to -30 degrees
 			} else {
 				state = 3;
-		if (state == 3) {
-			if (currentDistance < 54/2);
-				driveTrain.drive.aracadeDrive (driveToFeet (50)); 
-		} else {
-			state = 4;
-		
-			
+			}
+		} else if (state == 3) {
+			if (currentDistance < 5){ //if the robot has moved less than 5 feet
+				driveTrain.drive.arcadeDrive(driveToFeet(3), 0); // move 3 feet
+			} else {
+				state = 4;
+			}
+		} else if (state == 4) {
+			if (currentAngle != 0){ //if the angle is not 0
+				driveTrain.drive.arcadeDrive(0, turnToAngle(0)); //turn to 0 degrees
+			} else {
+				state = 5;
+			}
+		} else if (state == 5) {
+			if (currentDistance < 54/2 + 5) { //if the robot isn't in the null territory
+				driveTrain.drive.arcadeDrive(driveToFeet(20), turnToAngle(0)); //drive 20 feet forward
+			} else {
+				state = 6;
 			}
 		}
 	}
-	
 	
 	
 	@Override
