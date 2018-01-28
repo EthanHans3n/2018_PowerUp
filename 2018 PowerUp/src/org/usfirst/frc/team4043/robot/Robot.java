@@ -336,15 +336,31 @@ public class Robot extends TimedRobot {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		double time = 0;
-		
-		if (state == 1) {
-			if (currentDistance < 70 / 12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
+
+			}
+		else if (state == 1) {
+			if (currentAngle > -45);
+				driveTrain.drive.arcadeDrive ( , turnToAngle(-45));
 			} else {
 				state = 2;
+		
+		if (state == 2) {
+			if (currentDistance < 15) {
+				driveTrain.drive.arcadeDrive(driveToFeet(15), turnToAngle(0));
+			} else {
+				state = 3;
+		if (state == 3) {
+			if (currentDistance < 54/2);
+				driveTrain.drive.aracadeDrive (driveToFeet (50)); 
+		} else {
+			state = 4;
+		
+			
 			}
 		}
 	}
+	
+	
 	
 	@Override
 	public void teleopInit() {
