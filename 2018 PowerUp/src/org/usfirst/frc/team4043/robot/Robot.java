@@ -150,6 +150,16 @@ public class Robot extends TimedRobot {
 			driveSpeed = 0d;
 		}
 		
+		if (driveSpeed > 1) {
+			driveSpeed = 1;
+		} else if (driveSpeed < .1 && driveSpeed > 0) {
+			driveSpeed = .1d;
+		} else if (driveSpeed < -1) {
+			driveSpeed = -1;
+		} else if (driveSpeed > -.1 && driveSpeed < 0) {
+			driveSpeed = -.1d;
+		}
+		
 		return driveSpeed;
 	}
 	
@@ -161,6 +171,16 @@ public class Robot extends TimedRobot {
 			driveSpeed = (wantedDistance - currentDistance) / 50;
 		} else {
 			driveSpeed = 0d;
+		}
+		
+		if (driveSpeed > 1) {
+			driveSpeed = 1;
+		} else if (driveSpeed < .1 && driveSpeed > 0) {
+			driveSpeed = .1d;
+		} else if (driveSpeed < -1) {
+			driveSpeed = -1;
+		} else if (driveSpeed > -.1 && driveSpeed < 0) {
+			driveSpeed = -.1d;
 		}
 		
 		return driveSpeed;
