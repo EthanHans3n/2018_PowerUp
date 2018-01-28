@@ -7,10 +7,8 @@
 
 package org.usfirst.frc.team4043.robot;
 
-import org.usfirst.frc.team4043.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4043.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4043.robot.subsystems.Evelator;
-import org.usfirst.frc.team4043.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4043.robot.subsystems.Intake;
 
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -32,8 +30,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static final ExampleSubsystem kExampleSubsystem
-			= new ExampleSubsystem();
 	public static OI m_oi;
 	public static DriveTrain driveTrain;
 	public static Intake intake;
@@ -55,7 +51,6 @@ public class Robot extends TimedRobot {
 		ahrs = new AHRS(SPI.Port.kMXP);
 		intake = new Intake();
 		evelator = new Evelator();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
@@ -203,7 +198,118 @@ public class Robot extends TimedRobot {
 			}
 		}
 	}
-
+	public void ds3R() {
+		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentAngle;
+		double time = 0;
+		
+		if (state == 1) {
+			if (currentDistance < 140 /12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(140/12), turnToAngle(0));
+				evelator.elevatorUP();
+			} else {
+				state = 2;
+				time = Timer.getFPGATimestamp();
+			}
+		} else if (state == 2) {
+			if (Timer.getFPGATimestamp() < time + .4) {
+				intake.startYeet();
+			} else {
+				state = 3;
+				time = Timer.getFPGATimestamp();
+			}
+		} else if (state == 3) {
+			if (currentDistance > 130 /12) {
+				evelator.elevatorDOWN();
+				driveTrain.drive.arcadeDrive(backToFeet(130 / 12), turnToAngle(0));
+			} else {
+				state = 4;
+			}
+		} else if (state == 4) {
+			currentAngle = ahrs.getAngle();
+			if (currentAngle < 90) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(90));
+			} else {
+				state = 5;
+			}
+		}
+	}
+	
+	public void ds2L() {
+	double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentAngle = ahrs.getAngle();
+		double time = 0;
+	
+	//stage one we move 70/12 degrees forward from DS2
+		if (state == 1) {
+			if (currentDistance < 70 /12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
+			} else {
+				state = 2;
+			}
+		}
+			//second stage begins, we are turning -90 degrees 
+		else if (state == 2) {
+			if (currentAngle > -90) {
+				driveTrain.drive.arcadeDrive(0,turnToAngle(-90));
+				ahrs.reset(); 
+			} else {
+				state = 3;
+			}
+		}
+		
+		else if (state == 3) {
+			if (currentDistance >  72/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
+				//zoom zoom
+				} else {
+					state = 4;
+			}					
+		}
+			
+		else if (state==4) {
+			if (currentAngle < 90) {
+			driveTrain.drive.arcadeDrive(0,turnToAngle(90));
+			ahrs.reset();
+			} else {
+				state = 5;
+			}
+		}
+			
+		else if (state == 5) {
+			if (currentDistance < 70/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
+				evelator.elevatorUP();
+				time = Timer.getFPGATimestamp();
+			} else {
+				state = 6;
+			}
+		}
+		 
+		else if (state == 6) {
+			if (Timer.getFPGATimestamp() < time + .4) {
+				intake.startYeet();
+				//empty yeet
+			} else {
+				state = 7;
+			}
+		}
+		else if (state == 7) { 
+			if (currentDistance > 50/12) {
+				driveTrain.drive.arcadeDrive(backToFeet(50/12), turnToAngle(0));
+			} else {
+				state = 8;
+			}			
+		}
+		else if (state == 8) {
+			if (currentAngle > -90) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
+			} else {
+				state = 9;
+			}
+		}
+	}		
+	
 	@Override
 	public void teleopInit() {
 		// This makes sure that the autonomous stops running when
@@ -214,7 +320,7 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand.cancel();
 		}
 	}
-
+	
 	/**
 	 * This function is called periodically during operator control.
 	 */
