@@ -14,6 +14,7 @@ import org.usfirst.frc.team4043.robot.subsystems.Intake;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -35,7 +36,10 @@ public class Robot extends TimedRobot {
 	public static Intake intake;
 	public static Evelator evelator;
 	AHRS ahrs;
+
 	int state = 1;
+	String gameData;
+	String autoChoice;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -101,6 +105,41 @@ public class Robot extends TimedRobot {
 		RobotMap.motorFR.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		//Sets the feedback device as a quad encoder, which is what the cimcoder is
 		RobotMap.motorFR.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
+		
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+		boolean cross = SmartDashboard.getBoolean("DB/Button 0", false);
+		boolean ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
+		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
+		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
+		
+		if (cross) {
+			if (ds1) {
+				autoChoice = "ds1cross";
+			} else if (ds2) {
+				autoChoice = "ds2cross";
+			} else if (ds3) {
+				autoChoice = "ds3cross";
+			}
+		} else if (ds1) {
+			if (gameData.substring(0, 1) == "L") {
+				autoChoice = "ds1L";
+			} else {
+				autoChoice = "ds1R";
+			}
+		} else if (ds2) {
+			if (gameData.substring(0, 1) == "L") {
+				autoChoice = "ds2L";
+			} else {
+				autoChoice = "ds2R";
+			}
+		} else if (ds3) {
+			if (gameData.substring(0, 1) == "L") {
+				autoChoice = "ds3L";
+			} else {
+				autoChoice = "ds3R";
+			}
+		}
 	}
 
 	/**
@@ -111,6 +150,17 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		
 		System.out.println(RobotMap.motorFR.getSelectedSensorPosition(0));
+		
+		switch (autoChoice) {
+		case "ds1L": ds1L();
+//		case "ds1R": ds1R();
+		case "ds2L": ds2L();
+//		case "ds2R": ds2R();
+//		case "ds3L": ds3L();
+		case "ds3R": ds3R();
+		case "ds1cross": ds1cross();
+		case "ds3cross": ds3cross();
+		}
 	}
 	
 	
@@ -371,7 +421,7 @@ public class Robot extends TimedRobot {
 		}
 	}
 	
-	public void ds3Cross() {
+	public void ds3cross() {
  	   double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 	   double currentAngle = ahrs.getAngle();
         
