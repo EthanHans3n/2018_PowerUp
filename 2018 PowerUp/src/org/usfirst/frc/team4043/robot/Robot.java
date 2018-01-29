@@ -352,12 +352,12 @@ public class Robot extends TimedRobot {
 			}
 		} else if (state == 3) {
 			if (currentDistance < 60/12){ //if the robot has moved less than 5 feet
-				driveTrain.drive.arcadeDrive(driveToFeet(60/12), turnToAngle (-30)); // move 3 feet
+				driveTrain.drive.arcadeDrive(driveToFeet(60/12), turnToAngle(-30)); // move 3 feet
 			} else {
 				state = 4;
 			}
 		} else if (state == 4) {
-			if (currentAngle < 0 - 2){ //if the angle less than 0
+			if (currentAngle < -2){ //if the angle less than 0
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0)); //turn to 0 degrees
 			//reset encoder
 			} else {
