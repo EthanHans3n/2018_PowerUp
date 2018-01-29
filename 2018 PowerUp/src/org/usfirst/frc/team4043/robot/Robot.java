@@ -371,7 +371,48 @@ public class Robot extends TimedRobot {
 			}
 		}
 	}
-	
+	public void ds3Cross() {
+ 	   double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+	   double currentAngle;
+ 	   double time = 0;
+        
+	if (state == 1) {
+		if (currentDistance < 100 /12) {
+   		 driveTrain.drive.arcadeDrive(driveToFeet(100/12), turnToAngle(0));
+		}
+		else{
+		State = 2;
+	} else if (state == 2) {
+ 	   If ( 
+    		currentAngle = ahrs.getAngle();
+   	   if (currentAngle < 51.3) {
+  		  driveTrain.drive.arcadeDrive(0, turnToAngle(51.3));
+   	 //Reset quad encoder here!!!!!
+
+	} else {
+		state = 3;
+	} else if (state == 3) {
+		If (currentDistance < 62.5/12){
+			driveTrain.drive.arcadeDrive(driveToFeet(62.5/12) , turnToAngle(51.3));
+		} else {
+			state = 4;
+		}
+		} else if ( state == 4 ) {
+	    If ( currentAngle > 0 ) {
+ 		   driveTrain.drive.arcadeDrive(0, turnToAngle(0));
+ 		   //Reset quad encoder!!!!!!!!!!!!!!
+	} else {
+		state = 5;
+		}
+	} else if ( state == 5) {
+ 	   If ( currentDistance < 132/12 ) {
+   	 driveTrain.drive.arcadeDrive(driveToFeet(132/12) , turnToAngle(0));
+
+	} else {
+		State = 6;
+	}
+
+
 	
 	@Override
 	public void teleopInit() {
