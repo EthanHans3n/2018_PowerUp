@@ -338,32 +338,34 @@ public class Robot extends TimedRobot {
 		double time = 0;
 
 		if (state == 1) {
-			if (currentDistance < 10) { //if the robot hasn't crossed the auto line 
-				driveTrain.drive.arcadeDrive(driveToFeet(2), turnToAngle(0)); //drive 2 feet forward
+			if (currentDistance < 24 / 12) { //if the robot hasn't moved forward
+				driveTrain.drive.arcadeDrive(driveToFeet(24/12), turnToAngle(0)); //drive 2 feet forward
 			} else {
 				state = 2;
 			}
-		} else if (state == 2) {
-			if (currentAngle != -30){ //if the angle is not -30
+		} else if (state == 2) { 
+			if (currentAngle > -30 +2){ //if the angle more than -30
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-30)); //turn to -30 degrees
+			//reset encoder
 			} else {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 5){ //if the robot has moved less than 5 feet
-				driveTrain.drive.arcadeDrive(driveToFeet(3), 0); // move 3 feet
+			if (currentDistance < 60/12){ //if the robot has moved less than 5 feet
+				driveTrain.drive.arcadeDrive(driveToFeet(60/12), turnToAngle (-30)); // move 3 feet
 			} else {
 				state = 4;
 			}
 		} else if (state == 4) {
-			if (currentAngle != 0){ //if the angle is not 0
+			if (currentAngle < 0 - 2){ //if the angle less than 0
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0)); //turn to 0 degrees
+			//reset encoder
 			} else {
 				state = 5;
 			}
 		} else if (state == 5) {
-			if (currentDistance < 54/2 + 5) { //if the robot isn't in the null territory
-				driveTrain.drive.arcadeDrive(driveToFeet(20), turnToAngle(0)); //drive 20 feet forward
+			if (currentDistance < 240/12) { //if the robot isn't in the null territory
+				driveTrain.drive.arcadeDrive(driveToFeet(240/12), turnToAngle(0)); //drive 20 feet forward
 			} else {
 				state = 6;
 			}
