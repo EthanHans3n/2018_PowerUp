@@ -335,7 +335,6 @@ public class Robot extends TimedRobot {
 	public void ds1cross() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
-		double time = 0;
 
 		if (state == 1) {
 			if (currentDistance < 24 / 12) { //if the robot hasn't moved forward
@@ -371,45 +370,45 @@ public class Robot extends TimedRobot {
 			}
 		}
 	}
+	
 	public void ds3Cross() {
  	   double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
-	   double currentAngle;
- 	   double time = 0;
+	   double currentAngle = ahrs.getAngle();
         
-	if (state == 1) {
-		if (currentDistance < 100 /12) {
-   		 driveTrain.drive.arcadeDrive(driveToFeet(100/12), turnToAngle(0));
-		}
-		else{
-		State = 2;
-	} else if (state == 2) {
- 	   If ( 
-    		currentAngle = ahrs.getAngle();
-   	   if (currentAngle < 51.3) {
-  		  driveTrain.drive.arcadeDrive(0, turnToAngle(51.3));
-   	 //Reset quad encoder here!!!!!
-
-	} else {
-		state = 3;
-	} else if (state == 3) {
-		If (currentDistance < 62.5/12){
-			driveTrain.drive.arcadeDrive(driveToFeet(62.5/12) , turnToAngle(51.3));
-		} else {
-			state = 4;
-		}
-		} else if ( state == 4 ) {
-	    If ( currentAngle > 0 ) {
- 		   driveTrain.drive.arcadeDrive(0, turnToAngle(0));
- 		   //Reset quad encoder!!!!!!!!!!!!!!
-	} else {
-		state = 5;
-		}
-	} else if ( state == 5) {
- 	   If ( currentDistance < 132/12 ) {
-   	 driveTrain.drive.arcadeDrive(driveToFeet(132/12) , turnToAngle(0));
-
-	} else {
-		State = 6;
+ 	   if (state == 1) {
+ 		   if (currentDistance < 100 /12) {
+ 			   driveTrain.drive.arcadeDrive(driveToFeet(100/12), turnToAngle(0));
+ 		   }
+ 		   else{
+ 			   state = 2;
+ 		   }
+ 	   } else if (state == 2) {
+ 		   if (currentAngle < 51.3) {
+ 			   driveTrain.drive.arcadeDrive(0, turnToAngle(51.3));
+ 			   //Reset quad encoder here!!!!!
+ 		   } else {
+ 			   state = 3;
+ 		   }
+ 	   } else if (state == 3) {
+ 		   if (currentDistance < 62.5/12){
+ 			   driveTrain.drive.arcadeDrive(driveToFeet(62.5/12) , turnToAngle(51.3));
+ 		   } else {
+ 			   state = 4;
+ 		   }
+ 	   } else if ( state == 4 ) {
+ 		   if ( currentAngle > 0 ) {
+ 			   driveTrain.drive.arcadeDrive(0, turnToAngle(0));
+ 			   //Reset quad encoder!!!!!!!!!!!!!!
+ 		   } else {
+ 			   state = 5;
+ 		   }
+ 	   } else if (state == 5) {
+ 		   if ( currentDistance < 132/12 ) {
+ 			   driveTrain.drive.arcadeDrive(driveToFeet(132/12) , turnToAngle(0));
+ 		   } else {
+ 			   state = 6;
+ 		   }
+ 	   }
 	}
 
 
