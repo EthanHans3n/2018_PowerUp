@@ -160,6 +160,7 @@ public class Robot extends TimedRobot {
 		case "ds3R": ds3R();
 		case "ds1cross": ds1cross();
 		case "ds3cross": ds3cross();
+		case "ds2cross" : ds2cross();
 		}
 	}
 	
@@ -323,28 +324,28 @@ public class Robot extends TimedRobot {
 			//second stage begins, we are turning -90 degrees 
 		else if (state == 2) {
 			if (currentAngle > -90) {
-				driveTrain.drive.arcadeDrive(0,turnToAngle(-90));
-				ahrs.reset(); 
+				driveTrain.drive.arcadeDrive(0,turnToAngle(-90)); 
 			} else {
 				state = 3;
+				//RESET ENCODER HERE
 			}
 		}
 		
 		else if (state == 3) {
 			if (currentDistance >  72/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
+				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(-90));
 				//zoom zoom
-				} else {
-					state = 4;
+			} else {
+				state = 4;
 			}					
 		}
 			
 		else if (state==4) {
-			if (currentAngle < 90) {
-			driveTrain.drive.arcadeDrive(0,turnToAngle(90));
-			ahrs.reset();
+			if (currentAngle < 0) {
+			driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
 				state = 5;
+				//RESET ENCODER HERE
 			}
 		}
 			
@@ -352,9 +353,9 @@ public class Robot extends TimedRobot {
 			if (currentDistance < 70/12) {
 				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
 				evelator.elevatorUP();
-				time = Timer.getFPGATimestamp();
 			} else {
 				state = 6;
+				time = Timer.getFPGATimestamp();
 			}
 		}
 		 
@@ -477,6 +478,81 @@ public class Robot extends TimedRobot {
 	 			state = 3;
 	 		}
 	 	}
+	}
+	
+	public void ds2R() {
+		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentAngle = ahrs.getAngle();
+		double time = 0;
+	
+	//stage one we move 70/12 degrees forward from DS2
+		if (state == 1) {
+			if (currentDistance < 70 /12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
+			} else {
+				state = 2;
+			}
+		}
+			//second stage begins, we are turning 90 degrees 
+		else if (state == 2) {
+			if (currentAngle < 90) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(90)); 
+			} else {
+				state = 3;
+				//RESET ENCODER HERE
+			}
+		}
+		
+		else if (state == 3) {
+			if (currentDistance >  72/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(90));
+				//zoom zoom
+			} else {
+				state = 4;
+			}					
+		}
+			
+		else if (state==4) {
+			if (currentAngle > 0) {
+			driveTrain.drive.arcadeDrive(0,turnToAngle(0));
+			} else {
+				state = 5;
+				//RESET ENCODER HERE
+			}
+		}
+			
+		else if (state == 5) {
+			if (currentDistance < 70/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
+				evelator.elevatorUP();
+			} else {
+				state = 6;
+				time = Timer.getFPGATimestamp();
+			}
+		}
+		 
+		else if (state == 6) {
+			if (Timer.getFPGATimestamp() < time + .4) {
+				intake.startYeet();
+				//empty yeet
+			} else {
+				state = 7;
+			}
+		}
+		else if (state == 7) { 
+			if (currentDistance > 50/12) {
+				driveTrain.drive.arcadeDrive(backToFeet(50/12), turnToAngle(0));
+			} else {
+				state = 8;
+			}			
+		}
+		else if (state == 8) {
+			if (currentAngle < 90) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(90));
+			} else {
+				state = 9;
+			}
+		}
 	}
 	
 	@Override
