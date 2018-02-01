@@ -461,7 +461,23 @@ public class Robot extends TimedRobot {
  	   }
 	}
 
-
+	public void ds2cross() {
+		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+	        
+	 	if (state == 1) {
+	 		if (currentDistance < 120 / 12) {
+	 			driveTrain.drive.arcadeDrive(driveToFeet(120 / 12), turnToAngle(0));
+	 		} else {
+	 			state = 2;
+	 		}
+	 	} else if (state == 2){
+	 		if (currentDistance > 10 / 12) {
+	 			driveTrain.drive.arcadeDrive(backToFeet(10 / 12), turnToAngle(0));
+	 		} else {
+	 			state = 3;
+	 		}
+	 	}
+	}
 	
 	@Override
 	public void teleopInit() {
