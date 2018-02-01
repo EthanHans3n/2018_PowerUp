@@ -327,7 +327,7 @@ public class Robot extends TimedRobot {
 				driveTrain.drive.arcadeDrive(0,turnToAngle(-90)); 
 			} else {
 				state = 3;
-				//RESET ENCODER HERE
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 			}
 		}
 		
@@ -345,7 +345,7 @@ public class Robot extends TimedRobot {
 			driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
 				state = 5;
-				//RESET ENCODER HERE
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 			}
 		}
 			
@@ -396,7 +396,7 @@ public class Robot extends TimedRobot {
 		} else if (state == 2) { 
 			if (currentAngle > -30 +2){ //if the angle more than -30
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-30)); //turn to -30 degrees
-			//reset encoder
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 			} else {
 				state = 3;
 			}
@@ -409,7 +409,7 @@ public class Robot extends TimedRobot {
 		} else if (state == 4) {
 			if (currentAngle < -2){ //if the angle less than 0
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0)); //turn to 0 degrees
-			//reset encoder
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 			} else {
 				state = 5;
 			}
@@ -436,7 +436,7 @@ public class Robot extends TimedRobot {
  	   } else if (state == 2) {
  		   if (currentAngle < 51.3) {
  			   driveTrain.drive.arcadeDrive(0, turnToAngle(51.3));
- 			   //Reset quad encoder here!!!!!
+ 			   RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
  		   } else {
  			   state = 3;
  		   }
@@ -449,7 +449,7 @@ public class Robot extends TimedRobot {
  	   } else if ( state == 4 ) {
  		   if ( currentAngle > 0 ) {
  			   driveTrain.drive.arcadeDrive(0, turnToAngle(0));
- 			   //Reset quad encoder!!!!!!!!!!!!!!
+ 			   RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
  		   } else {
  			   state = 5;
  		   }
@@ -499,7 +499,7 @@ public class Robot extends TimedRobot {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(90)); 
 			} else {
 				state = 3;
-				//RESET ENCODER HERE
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 			}
 		}
 		
@@ -517,7 +517,7 @@ public class Robot extends TimedRobot {
 			driveTrain.drive.arcadeDrive(0,turnToAngle(0));
 			} else {
 				state = 5;
-				//RESET ENCODER HERE
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 			}
 		}
 			
