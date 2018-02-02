@@ -239,7 +239,7 @@ public class Robot extends TimedRobot {
 	
 	public void ds1L() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
-		double currentAngle;
+		double currentAngle = ahrs.getAngle();
 		double time = 0;
 		
 		if (state == 1) {
@@ -249,15 +249,15 @@ public class Robot extends TimedRobot {
 				state = 2;
 			}
 		if (state == 2) {
-			if(currentAngle < 2);
-				driveTrain.drive.arcadeDrive(0, turnToAngle(45));
+			if(currentAngle < -2);
+				driveTrain.drive.arcadeDrive(0, turnToAngle(-45));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		if (state == 3) {
 			if (currentDistance < Math.sqrt(2));
-				driveTrain.drive.arcadeDrive(Math.sqrt(2), turnToAngle(45));
+				driveTrain.drive.arcadeDrive(Math.sqrt(2), turnToAngle(-45));
 			} else {
 				state = 4;
 			}
@@ -292,7 +292,6 @@ public class Robot extends TimedRobot {
 				state = 8;
 			}
 		} else if (state == 9) {
-			currentAngle = ahrs.getAngle();
 			if (currentAngle > -90) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
 			} else {
@@ -301,37 +300,62 @@ public class Robot extends TimedRobot {
 	}
 	public void ds3R() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
-		double currentAngle;
+		double currentAngle = ahrs.getAngle();
 		double time = 0;
 		
 		if (state == 1) {
-			if (currentDistance < 140 /12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(140/12), turnToAngle(0));
-				evelator.elevatorUP();
+			if (currentDistance < 72/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet (72/12), turnToAngle (0));
 			} else {
 				state = 2;
+			}
+		if (state == 2) {
+			if(currentAngle < 2);
+				driveTrain.drive.arcadeDrive(0, turnToAngle(45));
+			} else {
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				state = 3;
+			}
+		if (state == 3) {
+			if (currentDistance < Math.sqrt(2));
+				driveTrain.drive.arcadeDrive(Math.sqrt(2), turnToAngle(45));
+			} else {
+				state = 4;
+			}
+		if (state == 4) {
+			if(currentAngle < 2);
+				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
+			} else {
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				state = 5;
+			}
+		if (state == 5) {
+			if (currentDistance < 72/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
+				evelator.elevatorUP();
+			} else {
+				state = 6;
 				time = Timer.getFPGATimestamp();
 			}
-		} else if (state == 2) {
+		} else if (state == 7) {
 			if (Timer.getFPGATimestamp() < time + .4) {
 				intake.startYeet();
 			} else {
-				state = 3;
+				state = 8;
 				time = Timer.getFPGATimestamp();
 			}
-		} else if (state == 3) {
+		} else if (state == 8) {
 			if (currentDistance > 130 /12) {
 				evelator.elevatorDOWN();
 				driveTrain.drive.arcadeDrive(backToFeet(130 / 12), turnToAngle(0));
 			} else {
-				state = 4;
+				state = 9;
 			}
-		} else if (state == 4) {
-			currentAngle = ahrs.getAngle();
+		} else if (state == 9) {
 			if (currentAngle < 90) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(90));
 			} else {
-				state = 5;
+				state = 9;
 			}
 		}
 	}
