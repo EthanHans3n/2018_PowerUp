@@ -248,27 +248,27 @@ public class Robot extends TimedRobot {
 			} else {
 				state = 2;
 			}
-		if (state == 2) {
-			if(currentAngle < -2);
-				driveTrain.drive.arcadeDrive(0, turnToAngle(-45));
+		} else if (state == 2) {
+			if(currentAngle < 2);
+				driveTrain.drive.arcadeDrive(0, turnToAngle(45));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
-		if (state == 3) {
+		} else if (state == 3) {
 			if (currentDistance < Math.sqrt(2));
-				driveTrain.drive.arcadeDrive(Math.sqrt(2), turnToAngle(-45));
+				driveTrain.drive.arcadeDrive(driveToFeet(Math.sqrt(2)), turnToAngle(45));
 			} else {
 				state = 4;
 			}
-		if (state == 4) {
-			if(currentAngle < 2);
+		} else if (state == 4) {
+			if(currentAngle > 2);
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 5;
 			}
-		if (state == 5) {
+		} else if (state == 5) {
 			if (currentDistance < 72/12) {
 				driveTrain.drive.arcadeDrive (driveToFeet (72/12), turnToAngle (0));
 				evelator.elevatorUP();
@@ -291,11 +291,11 @@ public class Robot extends TimedRobot {
 			} else {
 				state = 8;
 			}
-		} else if (state == 9) {
+		} else if (state == 8) {
 			if (currentAngle > -90) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
 			} else {
-				state = 10;
+				state = 9;
 		}
 	}
 	public void ds3R() {
@@ -309,27 +309,27 @@ public class Robot extends TimedRobot {
 			} else {
 				state = 2;
 			}
-		if (state == 2) {
+		} else if (state == 2) {
 			if(currentAngle < 2);
 				driveTrain.drive.arcadeDrive(0, turnToAngle(45));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
-		if (state == 3) {
+		} else if (state == 3) {
 			if (currentDistance < Math.sqrt(2));
 				driveTrain.drive.arcadeDrive(Math.sqrt(2), turnToAngle(45));
 			} else {
 				state = 4;
 			}
-		if (state == 4) {
+		} else if (state == 4) {
 			if(currentAngle < 2);
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 5;
 			}
-		if (state == 5) {
+		} else if (state == 5) {
 			if (currentDistance < 72/12) {
 				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
 				evelator.elevatorUP();
@@ -711,6 +711,66 @@ public class Robot extends TimedRobot {
 		}
 	}
 	
+	public void ds1R() {
+		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentAngle = ahrs.getAngle();
+		double time = 0;
+		
+		if (state == 1) {
+			if (currentDistance < 24/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet (24/12), turnToAngle (0));
+			} else {
+				state = 2;
+			}
+		} else if (state == 2) {
+			if(currentAngle < 30 + 2);
+				driveTrain.drive.arcadeDrive(0, turnToAngle(30));
+			} else {
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				state = 3;
+			}
+		} else if (state == 3) {
+			if (currentDistance < 168/12);
+				driveTrain.drive.arcadeDrive(driveToFeet(168/12), turnToAngle(30));
+			} else {
+				state = 4;
+			}
+		} else if (state == 4) {
+			if(currentAngle > 2);
+				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
+			} else {
+				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				state = 5;
+			}
+		} else if (state == 5) {
+			if (currentDistance < 24/12) {
+				driveTrain.drive.arcadeDrive (driveToFeet (24/12), turnToAngle (0));
+				evelator.elevatorUP();
+			} else {
+				state = 6;
+				time = Timer.getFPGATimestamp();
+			}
+		} else if (state == 6) {
+			if (Timer.getFPGATimestamp() < time + .4) {
+				intake.startYeet();
+			} else {
+				state = 7;
+				time = Timer.getFPGATimestamp();
+			}
+		} else if (state == 7) {
+			if (currentDistance > 130 /12) {
+				evelator.elevatorDOWN();
+				driveTrain.drive.arcadeDrive(backToFeet(130 / 12), turnToAngle(0));
+			} else {
+				state = 8;
+			}
+		} else if (state == 8) {
+			if (currentAngle < 90+2) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(90));
+			} else {
+				state = 9;
+			}
+				
 	@Override
 	public void teleopInit() {
 		// This makes sure that the autonomous stops running when
