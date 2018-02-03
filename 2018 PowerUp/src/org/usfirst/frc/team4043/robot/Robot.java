@@ -365,7 +365,7 @@ public class Robot extends TimedRobot {
 		double currentAngle = ahrs.getAngle();
 		double time = 0;
 	
-	//stage one we move 70/12 degrees forward from DS2
+	//stage one we move 70/12 forward from DS2
 		if (state == 1) {
 			if (currentDistance < 70 /12) {
 				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
@@ -384,7 +384,7 @@ public class Robot extends TimedRobot {
 		}
 		
 		else if (state == 3) {
-			if (currentDistance >  72/12) {
+			if (currentDistance >  78/12) {
 				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(-90));
 				//zoom zoom
 			} else {
@@ -420,8 +420,8 @@ public class Robot extends TimedRobot {
 			}
 		}
 		else if (state == 7) { 
-			if (currentDistance > 50/12) {
-				driveTrain.drive.arcadeDrive(backToFeet(50/12), turnToAngle(0));
+			if (currentDistance > 60/12) {
+				driveTrain.drive.arcadeDrive(backToFeet(60/12), turnToAngle(0));
 			} else {
 				state = 8;
 			}			
@@ -453,7 +453,7 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 60/12){ //if the robot has moved less than 5 feet
+			if (currentDistance < 48/12){ //if the robot has moved less than 5 feet
 				driveTrain.drive.arcadeDrive(driveToFeet(60/12), turnToAngle(-30)); // move 3 feet
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
@@ -466,8 +466,8 @@ public class Robot extends TimedRobot {
 				state = 5;
 			}
 		} else if (state == 5) {
-			if (currentDistance < 240/12) { //if the robot isn't in the null territory
-				driveTrain.drive.arcadeDrive(driveToFeet(240/12), turnToAngle(0)); //drive 20 feet forward
+			if (currentDistance < 180/12) { //if the robot isn't in the null territory
+				driveTrain.drive.arcadeDrive(driveToFeet(180/12), turnToAngle(0)); //drive 20 feet forward
 			} else {
 				state = 6;
 			}
@@ -525,23 +525,23 @@ public class Robot extends TimedRobot {
 	 			state = 2;
 	 		}
 		} else if (state == 2) {
-			if (currentAngle < 10 - 2) {
-				driveTrain.drive.arcadeDrive(0, turnToAngle(10));
+			if (currentAngle < 30 - 2) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(30));
 			} else {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 144/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(144/12), turnToAngle(10));
+			if (currentDistance < 180/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(180/12), turnToAngle(30));
 			} else {
 				state = 4;
 			
 			}
-	 	} else if (state == 4) {
-	 		if (currentDistance > 120 / 12) {
-	 			driveTrain.drive.arcadeDrive(backToFeet(144/12), turnToAngle(10));
+	 	} else if (state == 5) {
+	 		if (currentDistance > 144 / 12) {
+	 			driveTrain.drive.arcadeDrive(backToFeet(144/12), turnToAngle(0));
 	 		} else {
-	 			state = 5;
+	 			state = 6;
 	 		}
 	 	}
 	}
