@@ -243,8 +243,8 @@ public class Robot extends TimedRobot {
 		double time = 0;
 		
 		if (state == 1) {
-			if (currentDistance < 72/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet (72/12), turnToAngle (0));
+			if (currentDistance < 60/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet (60/12), turnToAngle (0));
 			} else {
 				state = 2;
 			}
@@ -256,8 +256,8 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < Math.sqrt(2));
-				driveTrain.drive.arcadeDrive(driveToFeet(Math.sqrt(2)), turnToAngle(45));
+			if (currentDistance < (Math.sqrt(2)*40)/12);
+				driveTrain.drive.arcadeDrive(driveToFeet((Math.sqrt(2)*40)/12), turnToAngle(45));
 			} else {
 				state = 4;
 			}
@@ -269,8 +269,8 @@ public class Robot extends TimedRobot {
 				state = 5;
 			}
 		} else if (state == 5) {
-			if (currentDistance < 72/12) {
-				driveTrain.drive.arcadeDrive (driveToFeet (72/12), turnToAngle (0));
+			if (currentDistance < 40/12) {
+				driveTrain.drive.arcadeDrive (driveToFeet (40/12), turnToAngle (0));
 				evelator.elevatorUP();
 			} else {
 				state = 6;
@@ -285,9 +285,9 @@ public class Robot extends TimedRobot {
 				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 7) {
-			if (currentDistance > 130 /12) {
+			if (currentDistance > 96 /12) {
 				evelator.elevatorDOWN();
-				driveTrain.drive.arcadeDrive(backToFeet(130 / 12), turnToAngle(0));
+				driveTrain.drive.arcadeDrive(backToFeet(96 / 12), turnToAngle(0));
 			} else {
 				state = 8;
 			}
@@ -304,8 +304,8 @@ public class Robot extends TimedRobot {
 		double time = 0;
 		
 		if (state == 1) {
-			if (currentDistance < 72/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet (72/12), turnToAngle (0));
+			if (currentDistance < 60/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet (60/12), turnToAngle (0));
 			} else {
 				state = 2;
 			}
@@ -317,8 +317,8 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < Math.sqrt(2));
-				driveTrain.drive.arcadeDrive(Math.sqrt(2), turnToAngle(45));
+			if (currentDistance < (Math.sqrt(2)*40)/12);
+				driveTrain.drive.arcadeDrive(driveToFeet((Math.sqrt(2)*40)/12), turnToAngle(45));
 			} else {
 				state = 4;
 			}
@@ -330,8 +330,8 @@ public class Robot extends TimedRobot {
 				state = 5;
 			}
 		} else if (state == 5) {
-			if (currentDistance < 72/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
+			if (currentDistance < 40/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(40/12), turnToAngle(0));
 				evelator.elevatorUP();
 			} else {
 				state = 6;
@@ -345,9 +345,9 @@ public class Robot extends TimedRobot {
 				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 8) {
-			if (currentDistance > 130 /12) {
+			if (currentDistance > 96 /12) {
 				evelator.elevatorDOWN();
-				driveTrain.drive.arcadeDrive(backToFeet(130 / 12), turnToAngle(0));
+				driveTrain.drive.arcadeDrive(backToFeet(96/ 12), turnToAngle(0));
 			} else {
 				state = 9;
 			}
