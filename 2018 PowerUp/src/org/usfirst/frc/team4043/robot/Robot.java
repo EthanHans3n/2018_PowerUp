@@ -561,7 +561,7 @@ public class Robot extends TimedRobot {
 		}
 			//second stage begins, we are turning 90 degrees 
 		else if (state == 2) {
-			if (currentAngle < 90) {
+			if (currentAngle < 90-2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(90)); 
 			} else {
 				state = 3;
@@ -570,8 +570,8 @@ public class Robot extends TimedRobot {
 		}
 		
 		else if (state == 3) {
-			if (currentDistance >  72/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(90));
+			if (currentDistance >  78/12) {
+				driveTrain.drive.arcadeDrive(driveToFeet(78/12), turnToAngle(90));
 				//zoom zoom
 			} else {
 				state = 4;
@@ -579,7 +579,7 @@ public class Robot extends TimedRobot {
 		}
 			
 		else if (state==4) {
-			if (currentAngle > 0) {
+			if (currentAngle > 2) {
 			driveTrain.drive.arcadeDrive(0,turnToAngle(0));
 			} else {
 				state = 5;
@@ -606,8 +606,8 @@ public class Robot extends TimedRobot {
 			}
 		}
 		else if (state == 7) { 
-			if (currentDistance > 50/12) {
-				driveTrain.drive.arcadeDrive(backToFeet(50/12), turnToAngle(0));
+			if (currentDistance > 60/12) {
+				driveTrain.drive.arcadeDrive(backToFeet(60/12), turnToAngle(0));
 			} else {
 				state = 8;
 			}			
@@ -737,15 +737,15 @@ public class Robot extends TimedRobot {
 				state = 2;
 			}
 		} else if (state == 2) {
-			if(currentAngle < 60 - 2);
-				driveTrain.drive.arcadeDrive(0, turnToAngle(60));
+			if(currentAngle < 70 - 2);
+				driveTrain.drive.arcadeDrive(0, turnToAngle(70));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 108/12);
-				driveTrain.drive.arcadeDrive(driveToFeet(108/12), turnToAngle(60));
+			if (currentDistance < 198/12);
+				driveTrain.drive.arcadeDrive(driveToFeet(198/12), turnToAngle(70));
 			} else {
 				state = 4;
 			}
@@ -757,8 +757,8 @@ public class Robot extends TimedRobot {
 				state = 5;
 			}
 		} else if (state == 5) {
-			if (currentDistance < 24/12) {
-				driveTrain.drive.arcadeDrive (driveToFeet (24/12), turnToAngle (0));
+			if (currentDistance < 48/12) {
+				driveTrain.drive.arcadeDrive (driveToFeet (48/12), turnToAngle (0));
 				evelator.elevatorUP();
 			} else {
 				state = 6;
@@ -772,9 +772,9 @@ public class Robot extends TimedRobot {
 				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 7) {
-			if (currentDistance > 130 /12) {
+			if (currentDistance > 120 /12) {
 				evelator.elevatorDOWN();
-				driveTrain.drive.arcadeDrive(backToFeet(130 / 12), turnToAngle(0));
+				driveTrain.drive.arcadeDrive(backToFeet(120 / 12), turnToAngle(0));
 			} else {
 				state = 8;
 			}
@@ -797,15 +797,15 @@ public class Robot extends TimedRobot {
 				state = 2;
 			}
 		} else if (state == 2) {
-			if(currentAngle > -60 + 2);
-				driveTrain.drive.arcadeDrive(0, turnToAngle(-60));
+			if(currentAngle > -70 + 2);
+				driveTrain.drive.arcadeDrive(0, turnToAngle(-70));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 108/12);
-				driveTrain.drive.arcadeDrive(driveToFeet(108/12), turnToAngle(-60));
+			if (currentDistance < 198/12);
+				driveTrain.drive.arcadeDrive(driveToFeet(198/12), turnToAngle(-70));
 			} else {
 				state = 4;
 			}
@@ -817,8 +817,8 @@ public class Robot extends TimedRobot {
 				state = 5;
 			}
 		} else if (state == 5) {
-			if (currentDistance < 24/12) {
-				driveTrain.drive.arcadeDrive (driveToFeet (24/12), turnToAngle (0));
+			if (currentDistance < 48/12) {
+				driveTrain.drive.arcadeDrive (driveToFeet (48/12), turnToAngle (0));
 				evelator.elevatorUP();
 			} else {
 				state = 6;
@@ -832,9 +832,9 @@ public class Robot extends TimedRobot {
 				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 7) {
-			if (currentDistance > 130 /12) {
+			if (currentDistance > 120 /12) {
 				evelator.elevatorDOWN();
-				driveTrain.drive.arcadeDrive(backToFeet(130 / 12), turnToAngle(0));
+				driveTrain.drive.arcadeDrive(backToFeet(120 / 12), turnToAngle(0));
 			} else {
 				state = 8;
 			}
