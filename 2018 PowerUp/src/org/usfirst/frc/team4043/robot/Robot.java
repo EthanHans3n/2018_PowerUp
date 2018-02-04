@@ -695,20 +695,20 @@ public class Robot extends TimedRobot {
 				state = 2;
 			}
 		} else if (state == 2) {
-			if(currentAngle < 70 - 2);
+			if(currentAngle < 70 - 2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(70));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 198/12);
+			if (currentDistance < 198/12) {
 				driveTrain.drive.arcadeDrive(driveToFeet(198/12), turnToAngle(70));
 			} else {
 				state = 4;
 			}
 		} else if (state == 4) {
-			if(currentAngle > 2);
+			if(currentAngle > 2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
@@ -737,7 +737,7 @@ public class Robot extends TimedRobot {
 				state = 8;
 			}
 		} else if (state == 8) {
-			if (currentAngle < 90+2) {
+			if (currentAngle < 90-2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(90));
 			} else {
 				state = 9;
@@ -755,20 +755,20 @@ public class Robot extends TimedRobot {
 				state = 2;
 			}
 		} else if (state == 2) {
-			if(currentAngle > -70 + 2);
+			if(currentAngle > -70 + 2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-70));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 198/12);
+			if (currentDistance < 198/12) {
 				driveTrain.drive.arcadeDrive(driveToFeet(198/12), turnToAngle(-70));
 			} else {
 				state = 4;
 			}
 		} else if (state == 4) {
-			if(currentAngle < -2);
+			if(currentAngle < -2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
