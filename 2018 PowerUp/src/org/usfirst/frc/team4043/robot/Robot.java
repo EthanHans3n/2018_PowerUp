@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
 	int state = 1;
 	String gameData;
 	String autoChoice;
+	double time = Timer.getFPGATimestamp();
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -112,6 +113,7 @@ public class Robot extends TimedRobot {
 		boolean ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
 		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
 		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
+		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
 		
 		if (cross) {
 			if (ds1) {
@@ -140,6 +142,12 @@ public class Robot extends TimedRobot {
 				autoChoice = "ds3R";
 			}
 		}
+		
+		if (dashData > 2) {
+			state = 0;
+		}
+		
+		time = Timer.getFPGATimestamp();
 	}
 
 	/**
@@ -550,10 +558,15 @@ public class Robot extends TimedRobot {
 	public void ds2R() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
-		double time = 0;
 	
 	//stage one we move 70/12 degrees forward from DS2
-		if (state == 1) {
+		if (state == 0) {
+			if (Timer.getFPGATimestamp() < time + 3) {
+				//Don't do anything
+			} else {
+				state = 1;
+			}
+		} else if (state == 1) {
 			if (currentDistance < 70 /12) {
 				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
 			} else {
