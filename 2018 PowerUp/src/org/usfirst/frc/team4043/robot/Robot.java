@@ -12,7 +12,6 @@ import org.usfirst.frc.team4043.robot.commands.EvelatorDown;
 import org.usfirst.frc.team4043.robot.commands.EvelatorUp;
 import org.usfirst.frc.team4043.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4043.robot.subsystems.ElevatorPID;
-import org.usfirst.frc.team4043.robot.subsystems.Evelator;
 import org.usfirst.frc.team4043.robot.subsystems.Intake;
 
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
