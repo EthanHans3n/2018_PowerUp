@@ -12,12 +12,12 @@ public class EvelatorUp extends Command {
     public EvelatorUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.evelator);
+    	requires(Robot.elevatorPID);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-   
+    	Robot.elevatorPID.setSetpoint(1000);
     }
 
     // Called repeatedly when this Command is scheduled to run
