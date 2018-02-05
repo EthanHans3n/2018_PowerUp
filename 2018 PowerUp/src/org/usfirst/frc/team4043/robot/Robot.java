@@ -526,8 +526,14 @@ public class Robot extends TimedRobot {
 	public void ds2cross() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
-	        
-	 	if (state == 1) {
+	
+		if (state == 0) {
+			if (Timer.getFPGATimestamp() < time + 5) {
+				//Don't do anything
+			} else {
+				state = 1;
+			}	        
+		} else if (state == 1) {
 	 		if (currentDistance < 24 / 12) {
 	 			driveTrain.drive.arcadeDrive(driveToFeet(24 / 12), turnToAngle(0));
 	 		} else {
@@ -828,6 +834,7 @@ public class Robot extends TimedRobot {
 	public void ds1cR() { //driver station 1 scale right
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
+		double time = 0;
 				
 		if(state == 1) {
 			if (currentDistance < 228 /12) { //if the robot hasn't moved forward
@@ -858,6 +865,7 @@ public class Robot extends TimedRobot {
 		} else if (state == 5) {
 			if (currentDistance < 72/12) {
 				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
+				evelator.elevatorUP();		//makes the elevator go up (hopefully)
 			} else {
 				state = 6;
 			}
@@ -867,6 +875,19 @@ public class Robot extends TimedRobot {
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 7;
+				time = Timer.getFPGATimestamp();	//start a timer so the intake and/or yeet thing can work 
+			}
+		} else if (state == 7) {
+			if (Timer.getFPGATimestamp() < time + .4) {		
+				intake.startYeet();		//shoots the power cube onto the scale
+			} else {
+				state = 8;
+			}
+		} else if (state == 8) {
+			if (Timer.getFPGATimestamp() < time + 1) { // time will most likely need to be changed or even more likely this whole 'if' condition so the program works properly 
+				evelator.elevatorDOWN();		//makes the elevator go back down so we don't get penalized for being extended before end game
+			} else {
+				state = 9;
 			}
 		}
 	}
@@ -903,15 +924,29 @@ public class Robot extends TimedRobot {
 			} else if (state == 5) {
 				if (currentDistance < 72/12) {
 					driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
+					evelator.elevatorUP();		//makes the elevator go up (hopefully)
 				} else {
 					state = 6;
 				}
-			} else if (state ==6) {
-				if (currentAngle < 90-2) {
+			} else if (state == 6) {
+				if (currentAngle > 90-2) {
 					driveTrain.drive.arcadeDrive(0, turnToAngle(90));
 				} else {
 					RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 					state = 7;
+					time = Timer.getFPGATimestamp();	//start a timer so the intake and/or yeet thing can work 
+				}
+			} else if (state == 7) {
+				if (Timer.getFPGATimestamp() < time + .4) {		
+					intake.startYeet();		//shoots the power cube onto the scale
+				} else {
+					state = 8;
+				}
+			} else if (state == 8) {
+				if (Timer.getFPGATimestamp() < time + 1) { // time will most likely need to be changed or even more likely this whole 'if' condition so the program works properly 
+					evelator.elevatorDOWN();		//makes the elevator go back down so we don't get penalized for being extended before end game
+				} else {
+					state = 9;
 				}
 			}
 		}
