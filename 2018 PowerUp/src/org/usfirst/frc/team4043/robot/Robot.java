@@ -164,10 +164,10 @@ public class Robot extends TimedRobot {
 		
 		switch (autoChoice) {
 		case "ds1L": ds1L();
-//		case "ds1R": ds1R();
+		case "ds1R": ds1R();
 		case "ds2L": ds2L();
-//		case "ds2R": ds2R();
-//		case "ds3L": ds3L();
+		case "ds2R": ds2R();
+		case "ds3L": ds3L();
 		case "ds3R": ds3R();
 		case "ds1cross": ds1cross();
 		case "ds3cross": ds3cross();
@@ -385,7 +385,6 @@ public class Robot extends TimedRobot {
 	public void ds2L() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
-		double time = 0;
 	
 		if (state == 0) {
 			if (Timer.getFPGATimestamp() < time + 3) {
