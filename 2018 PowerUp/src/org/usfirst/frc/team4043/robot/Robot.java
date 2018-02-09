@@ -17,6 +17,7 @@ import org.usfirst.frc.team4043.robot.subsystems.Intake;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -39,8 +40,10 @@ public class Robot extends TimedRobot {
 	public static Intake intake;
 	public static AHRS ahrs;
 	public static ElevatorPID elevatorPID;
+	public static AnalogInput ai;
 
 	int state = 1;
+	double currentUltrasonic = 0;
 	String gameData;
 	String autoChoice;
 	double time = Timer.getFPGATimestamp();
@@ -59,6 +62,7 @@ public class Robot extends TimedRobot {
 		ahrs = new AHRS(SPI.Port.kMXP);
 		intake = new Intake();
 		elevatorPID = new ElevatorPID();
+		ai = new AnalogInput(0);
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
@@ -251,7 +255,6 @@ public class Robot extends TimedRobot {
 	public void ds1L() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
-		double time = 0;
 		
 		if (state == 0) {
 			if (Timer.getFPGATimestamp() < time + 3) {
@@ -286,32 +289,38 @@ public class Robot extends TimedRobot {
 			}
 		} else if (state == 5) {
 			if (currentDistance < 40/12) {
-				driveTrain.drive.arcadeDrive (driveToFeet (40/12), turnToAngle (0));
+				driveTrain.drive.arcadeDrive(driveToFeet(30/12), turnToAngle(0));
 				elevatorPID.setSetpoint(300);
 			} else {
 				state = 6;
 				time = Timer.getFPGATimestamp();
 			}
-
 		} else if (state == 6) {
+			currentUltrasonic = ai.getValue();
+			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
+				driveTrain.drive.arcadeDrive(.25, turnToAngle(0));
+			} else {
+				state = 7;
+			}
+		} else if (state == 7) {
 			if (Timer.getFPGATimestamp() < time + .4) {
 				intake.startYeet();
 			} else {
-				state = 7;
+				state = 8;
 				time = Timer.getFPGATimestamp();
 			}
-		} else if (state == 7) {
+		} else if (state == 8) {
 			if (currentDistance > 96 /12) {
 				elevatorPID.setSetpoint(0);
 				driveTrain.drive.arcadeDrive(backToFeet(96 / 12), turnToAngle(0));
 			} else {
-				state = 8;
+				state = 9;
 			}
-		} else if (state == 8) {
+		} else if (state == 9) {
 			if (currentAngle > -90+2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
 			} else {
-				state = 9;
+				state = 10;
 			}
 		}
 	}
@@ -434,28 +443,33 @@ public class Robot extends TimedRobot {
 				state = 6;
 				time = Timer.getFPGATimestamp();
 			}
-		}
-		 
-		else if (state == 6) {
+		} else if (state == 6) {
+			currentUltrasonic = ai.getValue();
+			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
+				driveTrain.drive.arcadeDrive(.25, turnToAngle(0));
+			} else {
+				state = 7;
+			}
+		} else if (state == 7) {
 			if (Timer.getFPGATimestamp() < time + .4) {
 				intake.startYeet();
 				//empty yeet
 			} else {
-				state = 7;
+				state = 8;
 			}
 		}
-		else if (state == 7) { 
+		else if (state == 8) { 
 			if (currentDistance > 60/12) {
 				driveTrain.drive.arcadeDrive(backToFeet(60/12), turnToAngle(0));
 			} else {
-				state = 8;
+				state = 9;
 			}			
 		}
-		else if (state == 8) {
+		else if (state == 9) {
 			if (currentAngle > -90+2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
 			} else {
-				state = 9;
+				state = 10;
 			}
 		}
 	}
@@ -587,7 +601,7 @@ public class Robot extends TimedRobot {
 	
 	public void ds2R() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
-		double currentAngle = ahrs.getAngle();
+		double currentAngle = ahrs.getAngle(); 
 	
 		if (state == 0) {
 			if (Timer.getFPGATimestamp() < time + 3) {
@@ -627,33 +641,39 @@ public class Robot extends TimedRobot {
 			
 		} else if (state == 5) {
 			if (currentDistance < 70/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
+				driveTrain.drive.arcadeDrive(driveToFeet(60/12), turnToAngle(0));
 				elevatorPID.setSetpoint(300);
 			} else {
 				state = 6;
 				time = Timer.getFPGATimestamp();
 			}
-			
 		} else if (state == 6) {
+			currentUltrasonic = ai.getValue();
+			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
+				driveTrain.drive.arcadeDrive(.25, turnToAngle(0));
+			} else {
+				state = 7;
+			}
+		} else if (state == 7) {
 			if (Timer.getFPGATimestamp() < time + .4) {
 				intake.startYeet();
 				//empty yeet
 			} else {
-				state = 7;
+				state = 8;
 			}
 		
-		} else if (state == 7) { 
+		} else if (state == 8) { 
 			if (currentDistance > 60/12) {
 				driveTrain.drive.arcadeDrive(backToFeet(60/12), turnToAngle(0));
 			} else {
-				state = 8;
+				state = 9;
 			}			
 		
-		} else if (state == 8) {
+		} else if (state == 9) {
 			if (currentAngle < 90) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(90));
 			} else {
-				state = 9;
+				state = 10;
 			}
 		}
 	}
@@ -669,29 +689,51 @@ public class Robot extends TimedRobot {
 			}
 		} else if (state == 1) {
 			if (currentDistance < 240 / 12) { //if the robot hasn't moved forward
-				driveTrain.drive.arcadeDrive(driveToFeet(240/12), turnToAngle(0)); //drive 2 feet forward
+				driveTrain.drive.arcadeDrive(driveToFeet(324/12), turnToAngle(0)); //drive 20 feet forward
 			} else {
 				state = 2;
 			}
-		} else if (state == 2) { 
-			if (currentAngle < 68-2) { //if the angle more than
-				driveTrain.drive.arcadeDrive(0, turnToAngle(68)); //turn to  degrees
+		} else if (state == 2) {
+			if (currentAngle < 90) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(90));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 64/12) { //if the robot has moved less than  feet
-				driveTrain.drive.arcadeDrive(driveToFeet(64/12), turnToAngle(68));// move  feet
+			if (currentDistance > 305 / 12) {
+				driveTrain.drive.arcadeDrive(backToFeet(305 /12), turnToAngle(90));
 			} else {
 				state = 4;
+				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 4) {
-			if (currentAngle > 2) { //if the angle is  than 0
-				driveTrain.drive.arcadeDrive(0, turnToAngle(0)); //turn to 0 degrees
+			new EvelatorUp();
+			state = 5;
+			time = Timer.getFPGATimestamp();
+		} else if (state == 5) {
+			if (Timer.getFPGATimestamp() < time + .4) {
+				intake.startYeet();
 			} else {
+				state = 6;
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
-				state = 5;
+			}
+		} else if (state == 6) {
+			if (currentDistance > -10) {
+				driveTrain.drive.arcadeDrive(backToFeet(-10), turnToAngle(90));
+			} else {
+				state = 7;
+			}
+		} else if (state == 7) {
+			if (currentAngle > 0) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
+			} else {
+				state = 8;
+			}
+		} else if (state == 8) {
+			if (currentDistance > -60) {
+				driveTrain.drive.arcadeDrive(backToFeet(-60), turnToAngle(0));
+			} else {
+				state = 9;
 			}
 		}
 	}
