@@ -27,15 +27,15 @@ public class DriveTrain extends Subsystem {
     	RobotMap.motorBR.follow(RobotMap.motorFR);
 	}
 	
-	public void drive(double throttle, double turn) {
-		drive.arcadeDrive(throttle, turn);
+	public void drive(double left, double right) {
+		drive.tankDrive(left, right);
 	}
 	
 	public void drive(Joystick joy) {
 		inputSpeed = -joy.getRawAxis(1);
-		inputTurn = -joy.getRawAxis(4);
+		//inputTurn = -joy.getRawAxis(4); //For arcade drive
 		
-		//inputTurn = -joy.getRawAxis(5);	//For tank drive
+		inputTurn = -joy.getRawAxis(5);	//For tank drive
 		
 		drive(inputSpeed, -inputTurn);
 	}
