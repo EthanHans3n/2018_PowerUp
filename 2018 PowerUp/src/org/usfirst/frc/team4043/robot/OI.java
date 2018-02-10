@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team4043.robot;
 
+import org.usfirst.frc.team4043.robot.commands.ElevatorSwitch;
 import org.usfirst.frc.team4043.robot.commands.EvelatorDown;
 import org.usfirst.frc.team4043.robot.commands.EvelatorUp;
 import org.usfirst.frc.team4043.robot.commands.OperationKeapDaKewb;
@@ -53,18 +54,21 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 	public Joystick driveStick = new Joystick(0);
-	public Button yeetStart = new JoystickButton(driveStick, 1);
-	public Button intakeStart  = new JoystickButton(driveStick, 2);
-	public Button evelatorUp = new JoystickButton(driveStick, 3);
-	public Button evelatorDown = new JoystickButton(driveStick, 4);
-	public Button keepCube = new JoystickButton(driveStick, 5);
+	public Joystick coStick = new Joystick(1);
+	public Button yeetStart = new JoystickButton(driveStick, 6);
+	public Button intakeStart  = new JoystickButton(driveStick, 5);
+	public Button evelatorScale = new JoystickButton(coStick, 4);
+	public Button evelatorDown = new JoystickButton(coStick, 1);
+	public Button elevatorSwitch = new JoystickButton(coStick, 2);
+	public Button keepCube = new JoystickButton(driveStick, 1);
 	
 	public OI() {
 		intakeStart.whenPressed(new SuckIn());
 		yeetStart.whenPressed(new SpitOut());
 	
-		evelatorUp.whenPressed(new EvelatorUp());
+		evelatorScale.whenPressed(new EvelatorUp());
 		evelatorDown.whenPressed(new EvelatorDown());
+		elevatorSwitch.whenPressed(new ElevatorSwitch());
 		
 		keepCube.toggleWhenPressed(new OperationKeapDaKewb());
 	}
