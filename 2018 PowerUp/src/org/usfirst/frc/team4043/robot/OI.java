@@ -8,8 +8,10 @@
 package org.usfirst.frc.team4043.robot;
 
 import org.usfirst.frc.team4043.robot.commands.OperationKeapDaKewb;
+import org.usfirst.frc.team4043.robot.commands.Shift;
 import org.usfirst.frc.team4043.robot.commands.SpitOut;
 import org.usfirst.frc.team4043.robot.commands.SuckIn;
+import org.usfirst.frc.team4043.robot.commands.Unshift;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -58,12 +60,14 @@ public class OI {
 	public Button evelatorDown = new JoystickButton(coStick, 1);
 	public Button elevatorSwitch = new JoystickButton(coStick, 2);
 	public Button keepCube = new JoystickButton(driveStick, 1);
+	public Button shifter = new JoystickButton(driveStick, 2);
 	
 	public OI() {
 		intakeStart.whenPressed(new SuckIn());
 		yeetStart.whenPressed(new SpitOut());
 		
 		keepCube.toggleWhenPressed(new OperationKeapDaKewb());
+		shifter.toggleWhenPressed(new Shift());
 	}
 	
 	public Joystick getDriveStick() {

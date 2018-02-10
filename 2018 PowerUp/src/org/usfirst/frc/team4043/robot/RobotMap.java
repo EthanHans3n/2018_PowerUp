@@ -9,6 +9,8 @@ package org.usfirst.frc.team4043.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Solenoid;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -37,4 +39,6 @@ public class RobotMap {
 	public static WPI_TalonSRX intakeBR = new WPI_TalonSRX(8);
 	
 	public static WPI_TalonSRX evelator = new WPI_TalonSRX(9);
+	
+	public static Solenoid shifter = new Solenoid(0, 1);		//Change this to the correct ports
 }

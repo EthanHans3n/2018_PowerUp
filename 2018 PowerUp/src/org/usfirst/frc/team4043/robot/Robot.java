@@ -11,6 +11,7 @@ import org.usfirst.frc.team4043.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4043.robot.subsystems.Elevator;
 import org.usfirst.frc.team4043.robot.subsystems.ElevatorPID;
 import org.usfirst.frc.team4043.robot.subsystems.Intake;
+import org.usfirst.frc.team4043.robot.subsystems.Shifter;
 
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.kauailabs.navx.frc.AHRS;
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
 	public static ElevatorPID elevatorPID;
 	public static AnalogInput ai;
 	public static Elevator elevator;
+	public static Shifter shifter;
 	
 	public static boolean keepState = true;
 	int state = 1;
@@ -64,6 +66,7 @@ public class Robot extends TimedRobot {
 		elevatorPID = new ElevatorPID();
 		ai = new AnalogInput(0);
 		elevator = new Elevator();
+		shifter = new Shifter();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
