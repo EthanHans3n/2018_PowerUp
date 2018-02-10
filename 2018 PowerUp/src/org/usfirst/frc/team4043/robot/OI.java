@@ -9,6 +9,7 @@ package org.usfirst.frc.team4043.robot;
 
 import org.usfirst.frc.team4043.robot.commands.EvelatorDown;
 import org.usfirst.frc.team4043.robot.commands.EvelatorUp;
+import org.usfirst.frc.team4043.robot.commands.OperationKeapDaKewb;
 import org.usfirst.frc.team4043.robot.commands.SpitOut;
 import org.usfirst.frc.team4043.robot.commands.SuckIn;
 
@@ -56,6 +57,7 @@ public class OI {
 	public Button intakeStart  = new JoystickButton(driveStick, 2);
 	public Button evelatorUp = new JoystickButton(driveStick, 3);
 	public Button evelatorDown = new JoystickButton(driveStick, 4);
+	public Button keepCube = new JoystickButton(driveStick, 5);
 	
 	public OI() {
 		intakeStart.whenPressed(new SuckIn());
@@ -64,6 +66,7 @@ public class OI {
 		evelatorUp.whenPressed(new EvelatorUp());
 		evelatorDown.whenPressed(new EvelatorDown());
 		
+		keepCube.toggleWhenPressed(new OperationKeapDaKewb());
 	}
 	
 	public Joystick getDriveStick() {

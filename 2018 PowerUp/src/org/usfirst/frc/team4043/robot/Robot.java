@@ -41,7 +41,8 @@ public class Robot extends TimedRobot {
 	public static AHRS ahrs;
 	public static ElevatorPID elevatorPID;
 	public static AnalogInput ai;
-
+	
+	public static boolean keepState = true;
 	int state = 1;
 	double currentUltrasonic = 0;
 	String gameData;
@@ -336,7 +337,7 @@ public class Robot extends TimedRobot {
 			}
 		} else if (state == 1) {
 			if (currentDistance < 60/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet (60/12), turnToAngle (0));
+				driveTrain.drive.arcadeDrive(driveToFeet(60/12), turnToAngle(0));
 			} else {
 				state = 2;
 			}
