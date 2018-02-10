@@ -7,10 +7,8 @@
 
 package org.usfirst.frc.team4043.robot;
 
-import org.usfirst.frc.team4043.robot.commands.ElevatorSwitch;
-import org.usfirst.frc.team4043.robot.commands.EvelatorDown;
-import org.usfirst.frc.team4043.robot.commands.EvelatorUp;
 import org.usfirst.frc.team4043.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4043.robot.subsystems.Elevator;
 import org.usfirst.frc.team4043.robot.subsystems.ElevatorPID;
 import org.usfirst.frc.team4043.robot.subsystems.Intake;
 
@@ -41,6 +39,7 @@ public class Robot extends TimedRobot {
 	public static AHRS ahrs;
 	public static ElevatorPID elevatorPID;
 	public static AnalogInput ai;
+	public static Elevator elevator;
 	
 	public static boolean keepState = true;
 	int state = 1;
@@ -64,6 +63,7 @@ public class Robot extends TimedRobot {
 		intake = new Intake();
 		elevatorPID = new ElevatorPID();
 		ai = new AnalogInput(0);
+		elevator = new Elevator();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
@@ -114,6 +114,9 @@ public class Robot extends TimedRobot {
 		RobotMap.motorFR.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		//Sets the feedback device as a quad encoder, which is what the cimcoder is
 		RobotMap.motorFR.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
+		
+		RobotMap.evelator.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
+		RobotMap.evelator.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
@@ -708,7 +711,7 @@ public class Robot extends TimedRobot {
 				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 4) {
-			new EvelatorUp();
+			elevatorPID.setSetpoint(1000); //Change to what it should actually be
 			state = 5;
 			time = Timer.getFPGATimestamp();
 		} else if (state == 5) {
@@ -816,7 +819,7 @@ public class Robot extends TimedRobot {
 		} else if (state == 5) {
 			if (currentDistance < 48/12) {
 				driveTrain.drive.arcadeDrive (driveToFeet (48/12), turnToAngle (0));
-				new ElevatorSwitch();
+				elevatorPID.setSetpoint(300);
 			} else {
 				state = 6;
 				time = Timer.getFPGATimestamp();
@@ -830,7 +833,7 @@ public class Robot extends TimedRobot {
 			}
 		} else if (state == 7) {
 			if (currentDistance > 120 /12) {
-				new EvelatorDown();
+				elevatorPID.setSetpoint(0);
 				driveTrain.drive.arcadeDrive(backToFeet(120 / 12), turnToAngle(0));
 			} else {
 				state = 8;
@@ -883,7 +886,7 @@ public class Robot extends TimedRobot {
 		} else if (state == 5) {
 			if (currentDistance < 48/12) {
 				driveTrain.drive.arcadeDrive (driveToFeet (48/12), turnToAngle (0));
-				new ElevatorSwitch();
+				elevatorPID.setSetpoint(300); //Change to actual value
 			} else {
 				state = 6;
 				time = Timer.getFPGATimestamp();
@@ -897,7 +900,7 @@ public class Robot extends TimedRobot {
 			}
 		} else if (state == 7) {
 			if (currentDistance > 120 /12) {
-				new EvelatorDown();
+				elevatorPID.setSetpoint(0); //Maybe need to change this
 				driveTrain.drive.arcadeDrive(backToFeet(120 / 12), turnToAngle(0));
 			} else {
 				state = 8;
@@ -950,7 +953,7 @@ public class Robot extends TimedRobot {
 		} else if (state == 5) {
 			if (currentDistance < 72/12) {
 				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
-				new EvelatorUp();		//makes the elevator go up (hopefully)
+				elevatorPID.setSetpoint(1000); //Change this to what it needs to be
 			} else {
 				state = 6;
 			}
@@ -970,7 +973,7 @@ public class Robot extends TimedRobot {
 			}
 		} else if (state == 8) {
 			if (Timer.getFPGATimestamp() < time + 1) { // time will most likely need to be changed or even more likely this whole 'if' condition so the program works properly 
-				new EvelatorUp();		//makes the elevator go back down so we don't get penalized for being extended before end game
+				elevatorPID.setSetpoint(0); //Maybe change this
 			} else {
 				state = 9;
 			}
@@ -1014,7 +1017,7 @@ public class Robot extends TimedRobot {
 			} else if (state == 5) {
 				if (currentDistance < 72/12) {
 					driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
-					new EvelatorUp();		//makes the elevator go up (hopefully)
+					elevatorPID.setSetpoint(1000); //Change to actual value
 				} else {
 					state = 6;
 				}
@@ -1034,7 +1037,7 @@ public class Robot extends TimedRobot {
 				}
 			} else if (state == 8) {
 				if (Timer.getFPGATimestamp() < time + 1) { // time will most likely need to be changed or even more likely this whole 'if' condition so the program works properly 
-					new EvelatorDown();		//makes the elevator go back down so we don't get penalized for being extended before end game
+					elevatorPID.setSetpoint(0); //this might need to change
 				} else {
 					state = 9;
 				}
