@@ -334,7 +334,6 @@ public class Robot extends TimedRobot {
 	public void ds3R() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
-		double time = 0;
 		
 		if (state == 0) {
 			if (Timer.getFPGATimestamp() < time + 3) {
@@ -640,7 +639,7 @@ public class Robot extends TimedRobot {
 			
 		} else if (state == 4) {
 			if (currentAngle > 2) {
-			driveTrain.drive.arcadeDrive(0,turnToAngle(0));
+				driveTrain.drive.arcadeDrive(0,turnToAngle(0));
 			} else {
 				state = 5;
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
@@ -786,7 +785,6 @@ public class Robot extends TimedRobot {
 	public void ds1R() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
-		double time = 0;
 		
 		if (state == 0) {
 			if (Timer.getFPGATimestamp() < time + 3) {
@@ -853,7 +851,7 @@ public class Robot extends TimedRobot {
 	public void ds3L() {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
-		double time = 0;
+		
 		
 		if (state == 0) {
 			if (Timer.getFPGATimestamp() < time + 3) {
