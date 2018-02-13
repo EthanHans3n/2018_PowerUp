@@ -117,9 +117,11 @@ public class Robot extends TimedRobot {
 		RobotMap.motorFR.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		//Sets the feedback device as a quad encoder, which is what the cimcoder is
 		RobotMap.motorFR.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
+		RobotMap.motorFR.setSelectedSensorPosition(0, 0, 0);
 		
 		RobotMap.evelator.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		RobotMap.evelator.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
+		RobotMap.evelator.setSelectedSensorPosition(0, 0, 0);
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
@@ -128,8 +130,23 @@ public class Robot extends TimedRobot {
 		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
 		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
 		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
+		double scaleData = SmartDashboard.getNumber("DB/Slider 1", 0.0);
 		
-		if (cross) {
+		if (scaleData > 2) {
+			if (ds1) {
+				if (gameData.substring(0, 1) == "L") {
+					autoChoice = "ds1cL";
+				} else {
+					autoChoice = "ds1cR";
+				}
+			} else if (ds3) {
+				if (gameData.substring(0, 1) == "L") {
+					autoChoice = "ds3cL";
+				} else {
+					autoChoice = "ds3cR";
+				}
+			}
+		} else if (cross) {
 			if (ds1) {
 				autoChoice = "ds1cross";
 			} else if (ds2) {
@@ -180,6 +197,10 @@ public class Robot extends TimedRobot {
 		case "ds2R": ds2R();
 		case "ds3L": ds3L();
 		case "ds3R": ds3R();
+		case "ds1cR" : ds1cR();
+		case "ds1cL" : ds1cL();
+		case "ds3cR" : ds3cR();
+		case "ds3cL" : ds3cL();
 		case "ds1cross": ds1cross();
 		case "ds3cross": ds3cross();
 		case "ds2cross" : ds2cross();
