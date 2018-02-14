@@ -12,16 +12,26 @@ public class Intake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public void startSuck(){
-    	RobotMap.intakeL.set(1);
-    	RobotMap.intakeR.set(-1);
+    	RobotMap.intakeL.set(-.2);
+    	RobotMap.intakeR.set(.2);
     }
     public void startYeet(){
-    	RobotMap.intakeL.set(-1);
-    	RobotMap.intakeR.set(1);
+    	RobotMap.intakeL.set(.2);
+    	RobotMap.intakeR.set(-.2);
     }
     public void keepCube() {
-    	RobotMap.intakeL.set(.5);
-        RobotMap.intakeR.set(-.5);
+    	RobotMap.intakeL.set(-.1);
+        RobotMap.intakeR.set(.1);
+    }
+    
+    public void armsDown() {
+    	RobotMap.armVert.set(-.3);
+    }
+    
+    public void stopAll() {
+    	RobotMap.intakeL.set(0);
+    	RobotMap.intakeR.set(0);
+    	RobotMap.armVert.set(0);
     }
 
     public void initDefaultCommand() {

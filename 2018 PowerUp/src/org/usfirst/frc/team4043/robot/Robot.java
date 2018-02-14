@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team4043.robot;
 
+import org.usfirst.frc.team4043.robot.commands.ArmsDown;
 import org.usfirst.frc.team4043.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4043.robot.subsystems.Elevator;
 import org.usfirst.frc.team4043.robot.subsystems.ElevatorPID;
@@ -34,7 +35,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static OI m_oi;
 	public static DriveTrain driveTrain;
 	public static Intake intake;
 	public static AHRS ahrs;
@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
 	public static AnalogInput ai;
 	public static Elevator elevator;
 	public static Shifter shifter;
+	public static OI m_oi;
 	
 	public static boolean keepState = true;
 	int state = 1;
@@ -59,7 +60,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_oi = new OI();
 		driveTrain = new DriveTrain();
 		ahrs = new AHRS(SPI.Port.kMXP);
 		intake = new Intake();
@@ -67,6 +67,7 @@ public class Robot extends TimedRobot {
 		ai = new AnalogInput(0);
 		elevator = new Elevator();
 		shifter = new Shifter();
+		m_oi = new OI();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
@@ -114,14 +115,15 @@ public class Robot extends TimedRobot {
 		}
 		
 		//This should set the feedback from motorFR as 1ms per sample and unlimited bandwidth
-		RobotMap.motorFR.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
+		RobotMap.motorBR.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		//Sets the feedback device as a quad encoder, which is what the cimcoder is
-		RobotMap.motorFR.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
-		RobotMap.motorFR.setSelectedSensorPosition(0, 0, 0);
+		RobotMap.motorBR.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
+		RobotMap.motorBR.setSelectedSensorPosition(0, 0, 0);
 		
 		RobotMap.evelator.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		RobotMap.evelator.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
 		RobotMap.evelator.setSelectedSensorPosition(0, 0, 0);
+		new ArmsDown();
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
@@ -179,6 +181,7 @@ public class Robot extends TimedRobot {
 		}
 		
 		time = Timer.getFPGATimestamp();
+		ahrs.reset();
 	}
 
 	/**
@@ -188,96 +191,106 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		
-		System.out.println(RobotMap.motorFR.getSelectedSensorPosition(0));
+		System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
 		
-		switch (autoChoice) {
-		case "ds1L": ds1L();
-		case "ds1R": ds1R();
-		case "ds2L": ds2L();
-		case "ds2R": ds2R();
-		case "ds3L": ds3L();
-		case "ds3R": ds3R();
-		case "ds1cR" : ds1cR();
-		case "ds1cL" : ds1cL();
-		case "ds3cR" : ds3cR();
-		case "ds3cL" : ds3cL();
-		case "ds1cross": ds1cross();
-		case "ds3cross": ds3cross();
-		case "ds2cross" : ds2cross();
-		}
+//		switch (autoChoice) {
+//		case "ds1L": ds1L();
+//		case "ds1R": ds1R();
+//		case "ds2L": ds2L();
+//		case "ds2R": ds2R();
+//		case "ds3L": ds3L();
+//		case "ds3R": ds3R();
+//		case "ds1cR" : ds1cR();
+//		case "ds1cL" : ds1cL();
+//		case "ds3cR" : ds3cR();
+//		case "ds3cL" : ds3cL();
+//		case "ds1cross": ds1cross();
+//		case "ds3cross": ds3cross();
+//		case "ds2cross" : ds2cross();
+//		}
+		
+		autoTest();
 	}
-	
 	
 	public double turnToAngle(double wantedAngle){ //Takes in a wanted angle and returns the turnSpeed to get there
 		double currentAngle = ahrs.getAngle(); //In order to determine where we are, take in the current gyro value from the navx
 		double rotateSpeed;
 		
 		if (currentAngle > wantedAngle + 2) { 					//If we are too far to the right of where we want to be...
-			rotateSpeed = (wantedAngle - currentAngle) / 20;	//turn left (negative number)
+			rotateSpeed = -0.3d;	//turn left (negative number)
 		} else if (currentAngle < wantedAngle - 2) {			//Otherwise, if we are too far left ...
-			rotateSpeed = (wantedAngle - currentAngle) / 20;	//turn right (positive number)
+			rotateSpeed = 0.3d;	//turn right (positive number)
 		} else {												//If we are right on track ...
 			rotateSpeed = 0d;									//don't rotate
 		}
 		
 		//Just sanity checks for our output. Turning for arcade drive has to be between -1 and 1
-		if (rotateSpeed > 1) {												
-			rotateSpeed = 1;
-		} else if (rotateSpeed < -1) {
-			rotateSpeed = -1;
-		} else if (rotateSpeed < .1 && rotateSpeed > 0) {		//Checks for a value small enough that it won't turn the robot
-			rotateSpeed = .1;
-		} else if (rotateSpeed > -.1 && rotateSpeed < 0) {		//Checks for a value small enough that it won't turn the robot
-			rotateSpeed = -.1;
-		}
+//		if (rotateSpeed > 1) {												
+//			rotateSpeed = 1;
+//		} else if (rotateSpeed < -1) {
+//			rotateSpeed = -1;
+//		} else if (rotateSpeed < .1 && rotateSpeed > 0) {		//Checks for a value small enough that it won't turn the robot
+//			rotateSpeed = .1;
+//		} else if (rotateSpeed > -.1 && rotateSpeed < 0) {		//Checks for a value small enough that it won't turn the robot
+//			rotateSpeed = -.1;
+//		}
 		
 		return rotateSpeed;
 	}
 	
 	public double driveToFeet(double wantedDistance) { 
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double driveSpeed;
 		
-		if (currentDistance < wantedDistance) {
-			driveSpeed = (wantedDistance - currentDistance) / 50;
+		if (currentDistance < wantedDistance - 300) {
+			driveSpeed = 0.5d;
 		} else {
 			driveSpeed = 0d;
 		}
 		
-		if (driveSpeed > 1) {
-			driveSpeed = 1;
-		} else if (driveSpeed < .1 && driveSpeed > 0) {
-			driveSpeed = .1d;
-		} else if (driveSpeed < -1) {
-			driveSpeed = -1;
-		} else if (driveSpeed > -.1 && driveSpeed < 0) {
-			driveSpeed = -.1d;
-		}
+//		if (driveSpeed > 1) {
+//			driveSpeed = 1;
+//		} else if (driveSpeed < .1 && driveSpeed > 0) {
+//			driveSpeed = .1d;
+//		} else if (driveSpeed < -1) {
+//			driveSpeed = -1;
+//		} else if (driveSpeed > -.1 && driveSpeed < 0) {
+//			driveSpeed = -.1d;
+//		}
 		
 		return driveSpeed;
 	}
 	
 	public double backToFeet(double wantedDistance) {
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double driveSpeed;
 		
 		if (currentDistance > wantedDistance) {
-			driveSpeed = (wantedDistance - currentDistance) / 50;
+			driveSpeed = 0.5d;
 		} else {
 			driveSpeed = 0d;
 		}
 		
-		if (driveSpeed > 1) {
-			driveSpeed = 1;
-		} else if (driveSpeed < .1 && driveSpeed > 0) {
-			driveSpeed = .1d;
-		} else if (driveSpeed < -1) {
-			driveSpeed = -1;
-		} else if (driveSpeed > -.1 && driveSpeed < 0) {
-			driveSpeed = -.1d;
-		}
+//		if (driveSpeed > 1) {
+//			driveSpeed = 1;
+//		} else if (driveSpeed < .1 && driveSpeed > 0) {
+//			driveSpeed = .1d;
+//		} else if (driveSpeed < -1) {
+//			driveSpeed = -1;
+//		} else if (driveSpeed > -.1 && driveSpeed < 0) {
+//			driveSpeed = -.1d;
+//		}
 		
 		return driveSpeed;
+	}
+	
+	public void autoTest() {
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
+		double currentAngle = ahrs.getAngle();
+		
+		if (currentDistance < 90) {
+			Robot.driveTrain.drive.arcadeDrive(0, turnToAngle(90));
+		}
 	}
 	
 	public void ds1L() {

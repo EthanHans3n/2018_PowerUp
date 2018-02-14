@@ -18,6 +18,7 @@ public class DriveTrain extends Subsystem {
 	public DifferentialDrive drive;
 	double inputSpeed;
 	double inputTurn;
+	boolean flase = false;
 	
 	public DriveTrain() {
 		super();
@@ -25,6 +26,12 @@ public class DriveTrain extends Subsystem {
     	
     	RobotMap.motorBL.follow(RobotMap.motorFL);
     	RobotMap.motorBR.follow(RobotMap.motorFR);
+    	
+    	RobotMap.motorFR.setSafetyEnabled(false);
+    	RobotMap.motorBR.setSafetyEnabled(false);
+    	RobotMap.motorFL.setSafetyEnabled(false);
+    	RobotMap.motorBL.setSafetyEnabled(false);
+    	drive.setSafetyEnabled(flase);
 	}
 	
 	public void drive(double left, double right) {
@@ -35,7 +42,7 @@ public class DriveTrain extends Subsystem {
 		inputSpeed = -joy.getRawAxis(1);
 		//inputTurn = -joy.getRawAxis(4); //For arcade drive
 		
-		inputTurn = -joy.getRawAxis(5);	//For tank drive
+		inputTurn = joy.getRawAxis(5);	//For tank drive
 		
 		drive(inputSpeed, -inputTurn);
 	}

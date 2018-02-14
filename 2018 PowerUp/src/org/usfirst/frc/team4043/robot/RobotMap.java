@@ -33,10 +33,11 @@ public class RobotMap {
 	public static WPI_TalonSRX motorBR = new WPI_TalonSRX(12);
 	public static WPI_TalonSRX motorBL = new WPI_TalonSRX(13);
 	
-	public static WPI_TalonSRX intakeL = new WPI_TalonSRX(10);		//These still need to change
-	public static WPI_TalonSRX intakeR = new WPI_TalonSRX(9);		//^
+	public static WPI_TalonSRX intakeL = new WPI_TalonSRX(15);
+	public static WPI_TalonSRX intakeR = new WPI_TalonSRX(16);		
 	
 	public static WPI_TalonSRX evelator = new WPI_TalonSRX(11);
+	public static WPI_TalonSRX armVert = new WPI_TalonSRX(3);		//^
 	
 	public static Solenoid shifter = new Solenoid(7, 4);
 }
