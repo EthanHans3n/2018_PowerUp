@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
 	public static boolean keepState = true;
 	int state = 1;
 	double currentUltrasonic = 0;
+	public static boolean toggleKeep = false;
 	String gameData;
 	String autoChoice;
 	double time = Timer.getFPGATimestamp();

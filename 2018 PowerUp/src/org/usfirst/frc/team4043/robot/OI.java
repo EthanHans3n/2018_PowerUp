@@ -10,6 +10,7 @@ package org.usfirst.frc.team4043.robot;
 import org.usfirst.frc.team4043.robot.commands.OperationKeapDaKewb;
 import org.usfirst.frc.team4043.robot.commands.Shift;
 import org.usfirst.frc.team4043.robot.commands.SpitOut;
+import org.usfirst.frc.team4043.robot.commands.StopIntake;
 import org.usfirst.frc.team4043.robot.commands.SuckIn;
 import org.usfirst.frc.team4043.robot.commands.Unshift;
 
@@ -63,10 +64,13 @@ public class OI {
 	public Button shifter = new JoystickButton(driveStick, 2);
 	
 	public OI() {
-		intakeStart.whenPressed(new SuckIn());
-		yeetStart.whenPressed(new SpitOut());
+		intakeStart.whileHeld(new SuckIn());
+		yeetStart.whileHeld(new SpitOut());
 		
-		keepCube.toggleWhenPressed(new OperationKeapDaKewb());
+		intakeStart.whenReleased(new StopIntake());
+		yeetStart.whenReleased(new StopIntake());
+		
+		keepCube.whenPressed(new OperationKeapDaKewb());
 		shifter.toggleWhenPressed(new Shift());
 	}
 	

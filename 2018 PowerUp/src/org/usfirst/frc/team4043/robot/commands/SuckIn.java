@@ -17,11 +17,11 @@ public class SuckIn extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.intake.startSuck();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.intake.startSuck();
     }
 
     // Make this return true when this Command no longer needs to run execute()
