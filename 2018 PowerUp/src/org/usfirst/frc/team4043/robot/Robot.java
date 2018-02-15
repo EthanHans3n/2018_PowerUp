@@ -7,7 +7,6 @@
 
 package org.usfirst.frc.team4043.robot;
 
-import org.usfirst.frc.team4043.robot.commands.ArmsDown;
 import org.usfirst.frc.team4043.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4043.robot.subsystems.Elevator;
 import org.usfirst.frc.team4043.robot.subsystems.ElevatorPID;
@@ -123,7 +122,7 @@ public class Robot extends TimedRobot {
 		RobotMap.evelator.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		RobotMap.evelator.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
 		RobotMap.evelator.setSelectedSensorPosition(0, 0, 0);
-		new ArmsDown();
+		//new ArmsDown();
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
@@ -191,7 +190,7 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		
-		System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
+		//System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
 		
 //		switch (autoChoice) {
 //		case "ds1L": ds1L();
@@ -216,10 +215,10 @@ public class Robot extends TimedRobot {
 		double currentAngle = ahrs.getAngle(); //In order to determine where we are, take in the current gyro value from the navx
 		double rotateSpeed;
 		
-		if (currentAngle > wantedAngle + 2) { 					//If we are too far to the right of where we want to be...
-			rotateSpeed = -0.3d;	//turn left (negative number)
-		} else if (currentAngle < wantedAngle - 2) {			//Otherwise, if we are too far left ...
-			rotateSpeed = 0.3d;	//turn right (positive number)
+		if (currentAngle > wantedAngle - 2) { 					//If we are too far to the right of where we want to be...
+			rotateSpeed = -.7d;	//turn left (negative number)
+		} else if (currentAngle < wantedAngle + 2) {			//Otherwise, if we are too far left ...
+			rotateSpeed = 0.7d;	//turn right (positive number)
 		} else {												//If we are right on track ...
 			rotateSpeed = 0d;									//don't rotate
 		}
@@ -285,12 +284,20 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void autoTest() {
-		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
+		//double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
-		if (currentDistance < 90) {
+		if (currentAngle < 90) {
 			Robot.driveTrain.drive.arcadeDrive(0, turnToAngle(90));
+			System.out.println(ahrs.getAngle());
 		}
+		
+//		if (currentAngle < 90) {
+//			System.out.println("turning");
+//			Robot.driveTrain.drive.arcadeDrive(0, 1);
+//		}
+		
+		//System.out.println(ahrs.getAngle());
 	}
 	
 	public void ds1L() {
