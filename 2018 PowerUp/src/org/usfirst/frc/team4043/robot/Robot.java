@@ -576,8 +576,8 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-		   if (currentDistance < 100 /12) {
-			   driveTrain.drive.arcadeDrive(driveToFeet(100/12), turnToAngle(0));
+		   if (currentDistance < 21013) {
+			   driveTrain.drive.arcadeDrive(driveToFeet(21013), turnToAngle(0));
 			} else {
 			   state = 2;
 			}
@@ -589,21 +589,21 @@ public class Robot extends TimedRobot {
 				   state = 3;
 			   }
 		   } else if (state == 3) {
-			   if (currentDistance < 62.5/12) {
-				   driveTrain.drive.arcadeDrive(driveToFeet(62.5/12) , turnToAngle(51.3));
+			   if (currentDistance < 13133) {
+				   driveTrain.drive.arcadeDrive(driveToFeet(13133) , turnToAngle(51.3));
 			   } else {
 				   state = 4;
 			   }
 		   } else if ( state == 4 ) {
-			   if ( currentAngle > 0 ) {
+			   if ( currentAngle > 0) {
 				   driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			   } else {
 				   RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				   state = 5;
 			   }
 		   } else if (state == 5) {
-			   if (currentDistance < 132/12) {
-				   driveTrain.drive.arcadeDrive(driveToFeet(132/12), turnToAngle(0));
+			   if (currentDistance < 27737) {
+				   driveTrain.drive.arcadeDrive(driveToFeet(27737), turnToAngle(0));
 			   } else {
 				   state = 6;
  		 	  }
@@ -620,8 +620,8 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}	        
 		} else if (state == 1) {
-	 		if (currentDistance < 24 / 12) {
-	 			driveTrain.drive.arcadeDrive(driveToFeet(24 / 12), turnToAngle(0));
+	 		if (currentDistance < 5043) {
+	 			driveTrain.drive.arcadeDrive(driveToFeet(5043), turnToAngle(0));
 	 		} else {
 	 			state = 2;
 	 		}
@@ -632,15 +632,15 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 180/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(180/12), turnToAngle(30));
+			if (currentDistance < 37823) {
+				driveTrain.drive.arcadeDrive(driveToFeet(37823), turnToAngle(30));
 			} else {
 				state = 4;
 			
 			}
 	 	} else if (state == 5) {
-	 		if (currentDistance > 144 / 12) {
-	 			driveTrain.drive.arcadeDrive(backToFeet(144/12), turnToAngle(0));
+	 		if (currentDistance > 30258) {
+	 			driveTrain.drive.arcadeDrive(backToFeet(30258), turnToAngle(0));
 	 		} else {
 	 			state = 6;
 	 		}
@@ -657,8 +657,8 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 70 /12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(70/12), turnToAngle(0));
+			if (currentDistance < 14709) {
+				driveTrain.drive.arcadeDrive(driveToFeet(14709), turnToAngle(0));
 			} else {
 				state = 2;
 			}
@@ -672,8 +672,8 @@ public class Robot extends TimedRobot {
 			}
 			
 		} else if (state == 3) {
-			if (currentDistance >  78/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(78/12), turnToAngle(90));
+			if (currentDistance >  16390) {
+				driveTrain.drive.arcadeDrive(driveToFeet(16390), turnToAngle(90));
 				//zoom zoom
 			} else {
 				state = 4;
@@ -688,8 +688,8 @@ public class Robot extends TimedRobot {
 			}	
 			
 		} else if (state == 5) {
-			if (currentDistance < 70/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(60/12), turnToAngle(0));
+			if (currentDistance < 14709) {
+				driveTrain.drive.arcadeDrive(driveToFeet(14709), turnToAngle(0));
 				elevatorPID.setSetpoint(300);
 			} else {
 				state = 6;
@@ -698,7 +698,7 @@ public class Robot extends TimedRobot {
 		} else if (state == 6) {
 			currentUltrasonic = ai.getValue();
 			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
-				driveTrain.drive.arcadeDrive(.25, turnToAngle(0));
+				driveTrain.drive.arcadeDrive(driveToFeet(.25), turnToAngle(0));
 			} else {
 				state = 7;
 			}
@@ -711,8 +711,8 @@ public class Robot extends TimedRobot {
 			}
 		
 		} else if (state == 8) { 
-			if (currentDistance > 60/12) {
-				driveTrain.drive.arcadeDrive(backToFeet(60/12), turnToAngle(0));
+			if (currentDistance > 12608) {
+				driveTrain.drive.arcadeDrive(backToFeet(12608), turnToAngle(0));
 			} else {
 				state = 9;
 			}			
@@ -736,8 +736,8 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 240 / 12) { //if the robot hasn't moved forward
-				driveTrain.drive.arcadeDrive(driveToFeet(324/12), turnToAngle(0)); //drive 20 feet forward
+			if (currentDistance < 68081) { //if the robot hasn't moved forward
+				driveTrain.drive.arcadeDrive(driveToFeet(68081), turnToAngle(0)); //drive 20 feet forward
 			} else {
 				state = 2;
 			}
@@ -748,8 +748,8 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance > 305 / 12) {
-				driveTrain.drive.arcadeDrive(backToFeet(305 /12), turnToAngle(90));
+			if (currentDistance > 64088) {
+				driveTrain.drive.arcadeDrive(backToFeet(64088), turnToAngle(90));
 			} else {
 				state = 4;
 				time = Timer.getFPGATimestamp();
@@ -766,8 +766,8 @@ public class Robot extends TimedRobot {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 			}
 		} else if (state == 6) {
-			if (currentDistance > -10) {
-				driveTrain.drive.arcadeDrive(backToFeet(-10), turnToAngle(90));
+			if (currentDistance > -2101) {
+				driveTrain.drive.arcadeDrive(backToFeet(-2101), turnToAngle(90));
 			} else {
 				state = 7;
 			}
@@ -778,8 +778,8 @@ public class Robot extends TimedRobot {
 				state = 8;
 			}
 		} else if (state == 8) {
-			if (currentDistance > -60) {
-				driveTrain.drive.arcadeDrive(backToFeet(-60), turnToAngle(0));
+			if (currentDistance > -12608) {
+				driveTrain.drive.arcadeDrive(backToFeet(-12608), turnToAngle(0));
 			} else {
 				state = 9;
 			}
@@ -796,21 +796,21 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 240 / 12) { //if the robot hasn't moved forward
-				driveTrain.drive.arcadeDrive(driveToFeet(24/12), turnToAngle(0)); //drive 2 feet forward
+			if (currentDistance < 50430) { //if the robot hasn't moved forward
+				driveTrain.drive.arcadeDrive(driveToFeet(50430), turnToAngle(0)); //drive 2 feet forward
 			} else {
 				state = 2;
 			}
 		} else if (state == 2) { 
 			if (currentAngle > -68 + 2){ //if the angle  than 
-				driveTrain.drive.arcadeDrive(0, turnToAngle(68)); //turn to  degrees
+				driveTrain.drive.arcadeDrive(0, turnToAngle(-68)); //turn to  degrees
 			} else {
 				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 64/12){ //if the robot has moved less than  feet
-				driveTrain.drive.arcadeDrive(driveToFeet(64/12), turnToAngle(-68)); // move  feet
+			if (currentDistance < 13448){ //if the robot has moved less than  feet
+				driveTrain.drive.arcadeDrive(driveToFeet(13448), turnToAngle(-68)); // move  feet
 			} else {
 				state = 4;
 			}
@@ -834,8 +834,8 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 24/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet (24/12), turnToAngle (0));
+			if (currentDistance < 5043) {
+				driveTrain.drive.arcadeDrive(driveToFeet (5043), turnToAngle (0));
 			} else {
 				state = 2;
 			}
@@ -847,8 +847,8 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 198/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(198/12), turnToAngle(70));
+			if (currentDistance < 41605) {
+				driveTrain.drive.arcadeDrive(driveToFeet(41605), turnToAngle(70));
 			} else {
 				state = 4;
 			}
@@ -860,8 +860,8 @@ public class Robot extends TimedRobot {
 				state = 5;
 			}
 		} else if (state == 5) {
-			if (currentDistance < 48/12) {
-				driveTrain.drive.arcadeDrive (driveToFeet (48/12), turnToAngle (0));
+			if (currentDistance < 10086) {
+				driveTrain.drive.arcadeDrive (driveToFeet (10086), turnToAngle (0));
 				elevatorPID.setSetpoint(300);
 			} else {
 				state = 6;
@@ -875,9 +875,9 @@ public class Robot extends TimedRobot {
 				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 7) {
-			if (currentDistance > 120 /12) {
+			if (currentDistance > 25215) {
 				elevatorPID.setSetpoint(0);
-				driveTrain.drive.arcadeDrive(backToFeet(120 / 12), turnToAngle(0));
+				driveTrain.drive.arcadeDrive(backToFeet(25215), turnToAngle(0));
 			} else {
 				state = 8;
 			}
@@ -894,15 +894,14 @@ public class Robot extends TimedRobot {
 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
-		
 		if (state == 0) {
 			if (Timer.getFPGATimestamp() < time + 3) {
 			} else {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 24/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet (24/12), turnToAngle (0));
+			if (currentDistance < 5043) {
+				driveTrain.drive.arcadeDrive(driveToFeet (5043), turnToAngle (0));
 			} else {
 				state = 2;
 			}
@@ -914,8 +913,8 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 198/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(198/12), turnToAngle(-70));
+			if (currentDistance < 41605) {
+				driveTrain.drive.arcadeDrive(driveToFeet(41605), turnToAngle(-70));
 			} else {
 				state = 4;
 			}
@@ -927,8 +926,8 @@ public class Robot extends TimedRobot {
 				state = 5;
 			}
 		} else if (state == 5) {
-			if (currentDistance < 48/12) {
-				driveTrain.drive.arcadeDrive (driveToFeet (48/12), turnToAngle (0));
+			if (currentDistance < 10086) {
+				driveTrain.drive.arcadeDrive (driveToFeet (10086), turnToAngle (0));
 				elevatorPID.setSetpoint(300); //Change to actual value
 			} else {
 				state = 6;
@@ -942,9 +941,9 @@ public class Robot extends TimedRobot {
 				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 7) {
-			if (currentDistance > 120 /12) {
+			if (currentDistance > 25215) {
 				elevatorPID.setSetpoint(0); //Maybe need to change this
-				driveTrain.drive.arcadeDrive(backToFeet(120 / 12), turnToAngle(0));
+				driveTrain.drive.arcadeDrive(backToFeet(25215), turnToAngle(0));
 			} else {
 				state = 8;
 			}
@@ -968,8 +967,8 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 228 /12) { //if the robot hasn't moved forward
-				driveTrain.drive.arcadeDrive(driveToFeet(288 / 12), turnToAngle(0)); //drive 2 feet forward
+			if (currentDistance < 47909) { //if the robot hasn't moved forward
+				driveTrain.drive.arcadeDrive(driveToFeet(47909), turnToAngle(0)); //drive 2 feet forward
 			} else {
 				state = 2;
 			}
@@ -981,8 +980,8 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < 248/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(248/12), turnToAngle(90));
+			if (currentDistance < 52111) {
+				driveTrain.drive.arcadeDrive(driveToFeet(52111), turnToAngle(90));
 			} else {
 				state = 4;
 			}
@@ -994,8 +993,8 @@ public class Robot extends TimedRobot {
 				state = 5;
 			}
 		} else if (state == 5) {
-			if (currentDistance < 72/12) {
-				driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
+			if (currentDistance < 15129) {
+				driveTrain.drive.arcadeDrive(driveToFeet(15129), turnToAngle(0));
 				elevatorPID.setSetpoint(1000); //Change this to what it needs to be
 			} else {
 				state = 6;
@@ -1032,8 +1031,8 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 228 /12 ) { //if the robot hasn't moved forward
-				driveTrain.drive.arcadeDrive(driveToFeet(288 / 12), turnToAngle(0)); //drive 2 feet forward
+			if (currentDistance < 47909) { //if the robot hasn't moved forward
+				driveTrain.drive.arcadeDrive(driveToFeet(47909), turnToAngle(0)); //drive 2 feet forward
 			} else {
 				state = 2;
 			}
@@ -1045,8 +1044,8 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-				if (currentDistance < 248/12) {
-					driveTrain.drive.arcadeDrive(driveToFeet(248/12), turnToAngle(-90));
+				if (currentDistance < 52111) {
+					driveTrain.drive.arcadeDrive(driveToFeet(52111), turnToAngle(-90));
 				} else {
 					state = 4;	
 				}
@@ -1058,8 +1057,8 @@ public class Robot extends TimedRobot {
 					state = 5;
 				}
 			} else if (state == 5) {
-				if (currentDistance < 72/12) {
-					driveTrain.drive.arcadeDrive(driveToFeet(72/12), turnToAngle(0));
+				if (currentDistance < 15129) {
+					driveTrain.drive.arcadeDrive(driveToFeet(15129), turnToAngle(0));
 					elevatorPID.setSetpoint(1000); //Change to actual value
 				} else {
 					state = 6;
