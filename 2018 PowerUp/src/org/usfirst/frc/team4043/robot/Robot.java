@@ -324,7 +324,7 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < (11886) {
+			if (currentDistance < (11886)) {
 				driveTrain.drive.arcadeDrive(driveToFeet(11886), turnToAngle(45));
 			} else {
 				state = 4;
@@ -396,7 +396,7 @@ public class Robot extends TimedRobot {
 				state = 3;
 			}
 		} else if (state == 3) {
-			if (currentDistance < (11886) {
+			if (currentDistance < (11886)) {
 				driveTrain.drive.arcadeDrive(driveToFeet(11886), turnToAngle(45));
 			} else {
 				state = 4;
