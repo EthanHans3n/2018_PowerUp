@@ -209,16 +209,21 @@ public class Robot extends TimedRobot {
 //		case "ds2cross" : ds2cross();
 //		}
 		
-		autoTest();
+		//autoTest();
+		
+		ds2L();
+		//ds1cross();
+		System.out.println(ahrs.getAngle());
+		System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
 	}
 	
 	public double turnToAngle(double wantedAngle){ //Takes in a wanted angle and returns the turnSpeed to get there
 		double currentAngle = ahrs.getAngle(); //In order to determine where we are, take in the current gyro value from the navx
 		double rotateSpeed;
 		
-		if (currentAngle > wantedAngle - 2) { 					//If we are too far to the right of where we want to be...
+		if (currentAngle > wantedAngle + 2) { 					//If we are too far to the right of where we want to be...
 			rotateSpeed = -.7d;	//turn left (negative number)
-		} else if (currentAngle < wantedAngle + 2) {			//Otherwise, if we are too far left ...
+		} else if (currentAngle < wantedAngle - 2) {			//Otherwise, if we are too far left ...
 			rotateSpeed = 0.7d;	//turn right (positive number)
 		} else {												//If we are right on track ...
 			rotateSpeed = 0d;									//don't rotate
@@ -288,8 +293,8 @@ public class Robot extends TimedRobot {
 		//double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
-		if (currentAngle < 90) {
-			Robot.driveTrain.drive.arcadeDrive(0, turnToAngle(90));
+		if (currentAngle < 30) {
+			Robot.driveTrain.drive.arcadeDrive(0, turnToAngle(30));
 			System.out.println(ahrs.getAngle());
 		}
 		
@@ -302,7 +307,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void ds1L() {
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
 		if (state == 0) {
@@ -320,7 +325,7 @@ public class Robot extends TimedRobot {
 			if(currentAngle < 45-2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(45));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
@@ -333,7 +338,7 @@ public class Robot extends TimedRobot {
 			if(currentAngle > 2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 5;
 			}
 		} else if (state == 5) {
@@ -374,7 +379,7 @@ public class Robot extends TimedRobot {
 		}
 	}
 	public void ds3R() {
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
 		if (state == 0) {
@@ -392,7 +397,7 @@ public class Robot extends TimedRobot {
 			if(currentAngle < 45-2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(45));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
@@ -405,7 +410,7 @@ public class Robot extends TimedRobot {
 			if(currentAngle < -2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 5;
 			}
 		} else if (state == 5) {
@@ -440,7 +445,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void ds2L() {
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 	
 		if (state == 0) {
@@ -449,26 +454,28 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 14709) {
-				driveTrain.drive.arcadeDrive(driveToFeet(14709), turnToAngle(0));
+			if (currentDistance < 5000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
 			} else {
 				state = 2;
+				System.out.println("Start state 2");
 			}
 		}
 			//second stage begins, we are turning -90 degrees 
 		else if (state == 2) {
 			if (currentAngle > -90+2) {
-				driveTrain.drive.arcadeDrive(0,turnToAngle(-90)); 
+				driveTrain.drive.arcadeDrive(0, turnToAngle(-90)); 
+				System.out.println("state 2");
 			} else {
 				state = 3;
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 0);
+				
 			}
 		}
 		
 		else if (state == 3) {
-			if (currentDistance >  16390) {
-				driveTrain.drive.arcadeDrive(driveToFeet(16390), turnToAngle(-90));
-				//zoom zoom
+			if (currentDistance < 5000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(6667), turnToAngle(-90));
 			} else {
 				state = 4;
 			}					
@@ -479,51 +486,51 @@ public class Robot extends TimedRobot {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
 				state = 5;
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 			}
 		}
 			
 		else if (state == 5) {
-			if (currentDistance < 14709) {
-				driveTrain.drive.arcadeDrive(driveToFeet(14709), turnToAngle(0));
+			if (currentDistance < 5000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
 				elevatorPID.setSetpoint(300);
 			} else {
 				state = 6;
 				time = Timer.getFPGATimestamp();
 			}
-		} else if (state == 6) {
-			currentUltrasonic = ai.getValue();
-			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
-				driveTrain.drive.arcadeDrive(driveToFeet(.25), turnToAngle(0));
-			} else {
-				state = 7;
-			}
-		} else if (state == 7) {
-			if (Timer.getFPGATimestamp() < time + .4) {
-				intake.startYeet();
-				//empty yeet
-			} else {
-				state = 8;
-			}
-		}
-		else if (state == 8) { 
-			if (currentDistance > 12608) {
-				driveTrain.drive.arcadeDrive(backToFeet(12608), turnToAngle(0));
-			} else {
-				state = 9;
-			}			
-		}
-		else if (state == 9) {
-			if (currentAngle > -90+2) {
-				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
-			} else {
-				state = 10;
-			}
-		}
+		} //else if (state == 6) {
+//			currentUltrasonic = ai.getValue();
+//			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
+//				driveTrain.drive.arcadeDrive(driveToFeet(.25), turnToAngle(0));
+//			} else {
+//				state = 7;
+//			}
+//		} else if (state == 7) {
+//			if (Timer.getFPGATimestamp() < time + .4) {
+//				intake.startYeet();
+//				//empty yeet
+//			} else {
+//				state = 8;
+//			}
+//		}
+//		else if (state == 8) { 
+//			if (currentDistance > 12608) {
+//				driveTrain.drive.arcadeDrive(backToFeet(12608), turnToAngle(0));
+//			} else {
+//				state = 9;
+//			}			
+//		}
+//		else if (state == 9) {
+//			if (currentAngle > -90+2) {
+//				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
+//			} else {
+//				state = 10;
+//			}
+//		}
 	}
 	
 	public void ds1cross() {
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 
 		if (state == 0) {
@@ -532,42 +539,43 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 5043) { //if the robot hasn't moved forward
-				driveTrain.drive.arcadeDrive(driveToFeet(5043), turnToAngle(0)); //drive 2 feet forward
+			if (currentDistance < 25043) { //if the robot hasn't moved forward
+				driveTrain.drive.arcadeDrive(driveToFeet(25043), turnToAngle(0)); //drive 2 feet forward
 			} else {
 				state = 2;
 			}
-		} else if (state == 2) { 
-			if (currentAngle > -30 +2){ //if the angle more than -30
-				driveTrain.drive.arcadeDrive(0, turnToAngle(-30)); //turn to -30 degrees
-			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
-				state = 3;
-			}
-		} else if (state == 3) {
-			if (currentDistance < 48/12){ //if the robot has moved less than 5 feet
-				driveTrain.drive.arcadeDrive(driveToFeet(12608), turnToAngle(-30)); // move 3 feet
-			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
-				state = 4;
-			}
-		} else if (state == 4) {
-			if (currentAngle < -2) { //if the angle less than 0
-				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
-			} else {
-				state = 5;
-			}
-		} else if (state == 5) {
-			if (currentDistance < 37823) { //if the robot isn't in the null territory
-				driveTrain.drive.arcadeDrive(driveToFeet(37823), turnToAngle(0)); //drive 20 feet forward
-			} else {
-				state = 6;
-			}
 		}
+//		} else if (state == 2) { 
+//			if (currentAngle > -30 +2){ //if the angle more than -30
+//				driveTrain.drive.arcadeDrive(0, turnToAngle(-30)); //turn to -30 degrees
+//			} else {
+//				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
+//				state = 3;
+//			}
+//		} else if (state == 3) {
+//			if (currentDistance < 48/12){ //if the robot has moved less than 5 feet
+//				driveTrain.drive.arcadeDrive(driveToFeet(12608), turnToAngle(-30)); // move 3 feet
+//			} else {
+//				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
+//				state = 4;
+//			}
+//		} else if (state == 4) {
+//			if (currentAngle < -2) { //if the angle less than 0
+//				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
+//			} else {
+//				state = 5;
+//			}
+//		} else if (state == 5) {
+//			if (currentDistance < 37823) { //if the robot isn't in the null territory
+//				driveTrain.drive.arcadeDrive(driveToFeet(37823), turnToAngle(0)); //drive 20 feet forward
+//			} else {
+//				state = 6;
+//			}
+//		}
 	}
 	
 	public void ds3cross() {
- 		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+ 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
         
 		if (state == 0) {
@@ -585,7 +593,7 @@ public class Robot extends TimedRobot {
 			   if (currentAngle < 51.3) {
 				   driveTrain.drive.arcadeDrive(0, turnToAngle(51.3));
 			   } else {
-				   RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				   RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				   state = 3;
 			   }
 		   } else if (state == 3) {
@@ -598,7 +606,7 @@ public class Robot extends TimedRobot {
 			   if ( currentAngle > 0) {
 				   driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			   } else {
-				   RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				   RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				   state = 5;
 			   }
 		   } else if (state == 5) {
@@ -611,7 +619,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void ds2cross() {
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 	
 		if (state == 0) {
@@ -648,7 +656,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void ds2R() {
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle(); 
 	
 		if (state == 0) {
@@ -668,7 +676,7 @@ public class Robot extends TimedRobot {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(90)); 
 			} else {
 				state = 3;
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 			}
 			
 		} else if (state == 3) {
@@ -684,7 +692,7 @@ public class Robot extends TimedRobot {
 				driveTrain.drive.arcadeDrive(0,turnToAngle(0));
 			} else {
 				state = 5;
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 			}	
 			
 		} else if (state == 5) {
@@ -727,7 +735,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void ds1cL() { //driver station 1 scale left
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
 		if (state == 0) {
@@ -763,7 +771,7 @@ public class Robot extends TimedRobot {
 				intake.startYeet();
 			} else {
 				state = 6;
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 			}
 		} else if (state == 6) {
 			if (currentDistance > -2101) {
@@ -787,7 +795,7 @@ public class Robot extends TimedRobot {
 	}
 		
 	public void ds3cR() { //driver station 3 scale right
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
 		if (state == 0) {
@@ -805,7 +813,7 @@ public class Robot extends TimedRobot {
 			if (currentAngle > -68 + 2){ //if the angle  than 
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-68)); //turn to  degrees
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
@@ -818,14 +826,14 @@ public class Robot extends TimedRobot {
 			if (currentAngle < -2){ //if the angle is  than 0
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0)); //turn to 0 degrees
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 5;
 			}
 		}
 	}
 	
 	public void ds1R() {
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
 		if (state == 0) {
@@ -843,7 +851,7 @@ public class Robot extends TimedRobot {
 			if(currentAngle < 70 - 2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(70));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
@@ -856,7 +864,7 @@ public class Robot extends TimedRobot {
 			if(currentAngle > 2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 5;
 			}
 		} else if (state == 5) {
@@ -891,7 +899,7 @@ public class Robot extends TimedRobot {
 	}
 			
 	public void ds3L() {
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
 		if (state == 0) {
@@ -909,7 +917,7 @@ public class Robot extends TimedRobot {
 			if(currentAngle > -70 + 2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-70));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
@@ -922,7 +930,7 @@ public class Robot extends TimedRobot {
 			if(currentAngle < -2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 5;
 			}
 		} else if (state == 5) {
@@ -957,7 +965,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void ds1cR() { //driver station 1 scale right
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		double time = 0;
 				
@@ -976,7 +984,7 @@ public class Robot extends TimedRobot {
 			if (currentAngle < 90-2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(90)); //turn to 90 degrees
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
@@ -989,7 +997,7 @@ public class Robot extends TimedRobot {
 			if (currentAngle > 2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 5;
 			}
 		} else if (state == 5) {
@@ -1003,7 +1011,7 @@ public class Robot extends TimedRobot {
 			if (currentAngle > -90+2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 7;
 				time = Timer.getFPGATimestamp();	//start a timer so the intake and/or yeet thing can work 
 			}
@@ -1022,7 +1030,7 @@ public class Robot extends TimedRobot {
 		}
 	}
 	public void ds3cL() { //driver station 1 scale right
-		double currentDistance = RobotMap.motorFR.getSelectedSensorPosition(0);
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
 		
 		if (state == 0) {
@@ -1040,7 +1048,7 @@ public class Robot extends TimedRobot {
 			if (currentAngle > -90+2) {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(-90)); //turn to 90 degrees
 			} else {
-				RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 				state = 3;
 			}
 		} else if (state == 3) {
@@ -1053,7 +1061,7 @@ public class Robot extends TimedRobot {
 				if (currentAngle < -2) {
 					driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 				} else {
-					RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+					RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 					state = 5;
 				}
 			} else if (state == 5) {
@@ -1067,7 +1075,7 @@ public class Robot extends TimedRobot {
 				if (currentAngle > 90-2) {
 					driveTrain.drive.arcadeDrive(0, turnToAngle(90));
 				} else {
-					RobotMap.motorFR.setSelectedSensorPosition(0, 0, 10);
+					RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 					state = 7;
 					time = Timer.getFPGATimestamp();	//start a timer so the intake and/or yeet thing can work 
 				}

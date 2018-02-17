@@ -19,23 +19,41 @@ public class ElevatorUp extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	float axis = (float)OI.getCoStick().getRawAxis(5);
-    	if (axis > 0.1f){
-    		Robot.elevator.elevatorUp(axis);
-    		Robot.elevatorPID.disable();
-    	}
-    	else if (axis < -0.3f) {
-    		Robot.elevator.elevatorUp(axis);
-    		Robot.elevatorPID.disable();
-    	}
-    	else {
-    		Robot.elevatorPID.enable();
-    		Robot.elevatorPID.setSetpoint(RobotMap.evelator.getSelectedSensorPosition(0));
-    	}
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	float axisUp = (float)OI.getCoStick().getRawAxis(3);
+    	float axisDown = (float)OI.getCoStick().getRawAxis(2);
+    	System.out.println(axisUp);
+    	if(axisUp > axisDown) {
+    		if (axisUp > 0.1f){
+        		Robot.elevator.elevatorMove(axisUp);
+        		Robot.elevatorPID.disable();
+        	}
+        	else if (axisUp < -0.3f) {
+        		Robot.elevator.elevatorMove(axisUp);
+        		Robot.elevatorPID.disable();
+        	}
+//        	else {
+//        		Robot.elevatorPID.enable();
+//        		Robot.elevatorPID.setSetpoint(RobotMap.evelator.getSelectedSensorPosition(0));
+//        	}
+    	} else {
+    		if (axisDown > 0.1f){
+        		Robot.elevator.elevatorMove(-axisDown);
+        		Robot.elevatorPID.disable();
+        	}
+        	else if (axisDown < -0.3f) {
+        		Robot.elevator.elevatorMove(-axisDown);
+        		Robot.elevatorPID.disable();
+        	}
+//        	else {
+//        		Robot.elevatorPID.enable();
+//        		Robot.elevatorPID.setSetpoint(RobotMap.evelator.getSelectedSensorPosition(0));
+//        	}
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

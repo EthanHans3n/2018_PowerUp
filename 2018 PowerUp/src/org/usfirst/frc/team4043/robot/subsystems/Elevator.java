@@ -15,7 +15,8 @@ public class Elevator extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
-	public void elevatorUp(float axis) {
+	public void elevatorMove(float axis) {
+		Robot.elevatorPID.disable();
 		RobotMap.evelator.set(axis);
 	}
 	

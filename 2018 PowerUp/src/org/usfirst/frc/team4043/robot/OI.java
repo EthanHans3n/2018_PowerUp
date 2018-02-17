@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team4043.robot;
 
+import org.usfirst.frc.team4043.robot.commands.ElevatorDown;
+import org.usfirst.frc.team4043.robot.commands.ElevatorUp;
 import org.usfirst.frc.team4043.robot.commands.OperationKeapDaKewb;
 import org.usfirst.frc.team4043.robot.commands.Shift;
 import org.usfirst.frc.team4043.robot.commands.SpitOut;
@@ -69,6 +71,9 @@ public class OI {
 		
 		intakeStart.whenReleased(new StopIntake());
 		yeetStart.whenReleased(new StopIntake());
+		
+		evelatorUp.whileHeld(new ElevatorUp());
+		//evelatorDown.whileHeld(new ElevatorDown());
 		
 		keepCube.whenPressed(new OperationKeapDaKewb());
 		shifter.toggleWhenPressed(new Shift());
