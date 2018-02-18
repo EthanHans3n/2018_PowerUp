@@ -385,12 +385,12 @@ public class Robot extends TimedRobot {
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
-		boolean cross = SmartDashboard.getBoolean("DB/Button 0", false);
-		boolean ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
-		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
-		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
+//		boolean cross = SmartDashboard.getBoolean("DB/Button 0", false);
+//		boolean ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
+//		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
+//		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
 		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
-		double scaleData = SmartDashboard.getNumber("DB/Slider 1", 0.0);
+//		double scaleData = SmartDashboard.getNumber("DB/Slider 1", 0.0);
 		
 		initTime = Timer.getFPGATimestamp();
 		
@@ -475,6 +475,12 @@ public class Robot extends TimedRobot {
 //		case "ds2cross" : ds2cross();
 //		default: autoTest();
 //		}
+		
+		if (autoChoice == "ds2L") {
+			ds2L();
+		} else if (autoChoice == "ds2R") {
+			ds2R();
+		}
 		
 		//autoTest();
 		
@@ -629,7 +635,6 @@ public class Robot extends TimedRobot {
 	
 	public void ds1cross() {
 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
-		double currentAngle = ahrs.getAngle();
 
 		if (state == 0) {
 			if (Timer.getFPGATimestamp() < time + 3) {

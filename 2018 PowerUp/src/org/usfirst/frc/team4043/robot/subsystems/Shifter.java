@@ -1,8 +1,6 @@
 package org.usfirst.frc.team4043.robot.subsystems;
 
 import org.usfirst.frc.team4043.robot.RobotMap;
-import org.usfirst.frc.team4043.robot.commands.Unshift;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**

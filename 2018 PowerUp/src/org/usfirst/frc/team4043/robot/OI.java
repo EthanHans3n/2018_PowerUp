@@ -15,12 +15,9 @@ import org.usfirst.frc.team4043.robot.commands.Shift;
 import org.usfirst.frc.team4043.robot.commands.SpitOut;
 import org.usfirst.frc.team4043.robot.commands.StopIntake;
 import org.usfirst.frc.team4043.robot.commands.SuckIn;
-import org.usfirst.frc.team4043.robot.commands.Unshift;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
