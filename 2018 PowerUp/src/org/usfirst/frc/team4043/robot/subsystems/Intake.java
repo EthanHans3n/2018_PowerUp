@@ -28,10 +28,13 @@ public class Intake extends Subsystem {
     	RobotMap.armVert.set(-.3);
     }
     
+    public void armsStop() {
+    	RobotMap.armVert.set(0);;
+    }
+    
     public void stopAll() {
     	RobotMap.intakeL.set(0);
     	RobotMap.intakeR.set(0);
-    	RobotMap.armVert.set(0);
     }
 
     public void initDefaultCommand() {

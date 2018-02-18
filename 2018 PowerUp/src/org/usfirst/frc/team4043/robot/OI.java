@@ -8,6 +8,7 @@
 package org.usfirst.frc.team4043.robot;
 
 import org.usfirst.frc.team4043.robot.commands.ElevatorDown;
+import org.usfirst.frc.team4043.robot.commands.ElevatorStop;
 import org.usfirst.frc.team4043.robot.commands.ElevatorUp;
 import org.usfirst.frc.team4043.robot.commands.OperationKeapDaKewb;
 import org.usfirst.frc.team4043.robot.commands.Shift;
@@ -19,6 +20,7 @@ import org.usfirst.frc.team4043.robot.commands.Unshift;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -65,6 +67,9 @@ public class OI {
 	public Button keepCube = new JoystickButton(driveStick, 1);
 	public Button shifter = new JoystickButton(driveStick, 2);
 	
+	//public Trigger elevatorTrigUp = new JoystickButton(driveStick, 3);
+	//public Trigger elevatorTrigDown = new JoystickButton(driveStick, 2);
+	
 	public OI() {
 		intakeStart.whileHeld(new SuckIn());
 		yeetStart.whileHeld(new SpitOut());
@@ -72,8 +77,13 @@ public class OI {
 		intakeStart.whenReleased(new StopIntake());
 		yeetStart.whenReleased(new StopIntake());
 		
+//		elevatorTrigUp.whenActive(new ElevatorUp());
+//		elevatorTrigDown.whenActive(new ElevatorUp());
+		
 		evelatorUp.whileHeld(new ElevatorUp());
-		//evelatorDown.whileHeld(new ElevatorDown());
+		evelatorDown.whileHeld(new ElevatorDown());
+		evelatorUp.whenReleased(new ElevatorStop());
+		evelatorDown.whenReleased(new ElevatorStop());
 		
 		keepCube.whenPressed(new OperationKeapDaKewb());
 		shifter.toggleWhenPressed(new Shift());

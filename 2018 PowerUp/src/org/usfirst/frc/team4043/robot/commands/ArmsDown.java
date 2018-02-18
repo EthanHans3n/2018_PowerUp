@@ -2,17 +2,18 @@ package org.usfirst.frc.team4043.robot.commands;
 
 import org.usfirst.frc.team4043.robot.Robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ElevatorDown extends Command {
+public class ArmsDown extends Command {
 
-    public ElevatorDown() {
+    public ArmsDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.elevator);
+    	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
@@ -21,7 +22,11 @@ public class ElevatorDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.elevatorMove(.5f);
+    	if (Timer.getFPGATimestamp() < Robot.initTime + 4) {
+    		Robot.intake.armsDown();
+    	} else {
+    		Robot.intake.armsStop();
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

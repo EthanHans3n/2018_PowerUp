@@ -44,11 +44,12 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 	
 	public static boolean keepState = true;
+	public static double initTime = 0;
 	int state = 1;
 	double currentUltrasonic = 0;
 	public static boolean toggleKeep = false;
 	String gameData;
-	String autoChoice;
+	String autoChoice = "";
 	double time = Timer.getFPGATimestamp();
 
 	Command m_autonomousCommand;
@@ -98,133 +99,15 @@ public class Robot extends TimedRobot {
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the switch structure below with additional strings & commands.
 	 */
-	@Override
-	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}
-		
-		//This should set the feedback from motorFR as 1ms per sample and unlimited bandwidth
-		RobotMap.motorBR.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
-		//Sets the feedback device as a quad encoder, which is what the cimcoder is
-		RobotMap.motorBR.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
-		RobotMap.motorBR.setSelectedSensorPosition(0, 0, 0);
-		
-		RobotMap.evelator.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
-		RobotMap.evelator.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
-		RobotMap.evelator.setSelectedSensorPosition(0, 0, 0);
-		//new ArmsDown();
-		
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		
-		boolean cross = SmartDashboard.getBoolean("DB/Button 0", false);
-		boolean ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
-		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
-		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
-		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
-		double scaleData = SmartDashboard.getNumber("DB/Slider 1", 0.0);
-		
-		if (scaleData > 2) {
-			if (ds1) {
-				if (gameData.substring(0, 1) == "L") {
-					autoChoice = "ds1cL";
-				} else {
-					autoChoice = "ds1cR";
-				}
-			} else if (ds3) {
-				if (gameData.substring(0, 1) == "L") {
-					autoChoice = "ds3cL";
-				} else {
-					autoChoice = "ds3cR";
-				}
-			}
-		} else if (cross) {
-			if (ds1) {
-				autoChoice = "ds1cross";
-			} else if (ds2) {
-				autoChoice = "ds2cross";
-			} else if (ds3) {
-				autoChoice = "ds3cross";
-			}
-		} else if (ds1) {
-			if (gameData.substring(0, 1) == "L") {
-				autoChoice = "ds1L";
-			} else {
-				autoChoice = "ds1R";
-			}
-		} else if (ds2) {
-			if (gameData.substring(0, 1) == "L") {
-				autoChoice = "ds2L";
-			} else {
-				autoChoice = "ds2R";
-			}
-		} else if (ds3) {
-			if (gameData.substring(0, 1) == "L") {
-				autoChoice = "ds3L";
-			} else {
-				autoChoice = "ds3R";
-			}
-		}
-		
-		if (dashData > 2) {
-			state = 0;
-		}
-		
-		time = Timer.getFPGATimestamp();
-		ahrs.reset();
-	}
-
-	/**
-	 * This function is called periodically during autonomous.
-	 */
-	@Override
-	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
-		
-		//System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
-		
-//		switch (autoChoice) {
-//		case "ds1L": ds1L();
-//		case "ds1R": ds1R();
-//		case "ds2L": ds2L();
-//		case "ds2R": ds2R();
-//		case "ds3L": ds3L();
-//		case "ds3R": ds3R();
-//		case "ds1cR" : ds1cR();
-//		case "ds1cL" : ds1cL();
-//		case "ds3cR" : ds3cR();
-//		case "ds3cL" : ds3cL();
-//		case "ds1cross": ds1cross();
-//		case "ds3cross": ds3cross();
-//		case "ds2cross" : ds2cross();
-//		}
-		
-		//autoTest();
-		
-		ds2L();
-		//ds1cross();
-		System.out.println(ahrs.getAngle());
-		System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
-	}
 	
 	public double turnToAngle(double wantedAngle){ //Takes in a wanted angle and returns the turnSpeed to get there
 		double currentAngle = ahrs.getAngle(); //In order to determine where we are, take in the current gyro value from the navx
 		double rotateSpeed;
 		
 		if (currentAngle > wantedAngle + 2) { 					//If we are too far to the right of where we want to be...
-			rotateSpeed = -.7d;	//turn left (negative number)
+			rotateSpeed = .7d;	//turn left (negative number)
 		} else if (currentAngle < wantedAngle - 2) {			//Otherwise, if we are too far left ...
-			rotateSpeed = 0.7d;	//turn right (positive number)
+			rotateSpeed = -.7d;	//turn right (positive number)
 		} else {												//If we are right on track ...
 			rotateSpeed = 0d;									//don't rotate
 		}
@@ -305,6 +188,304 @@ public class Robot extends TimedRobot {
 		
 		//System.out.println(ahrs.getAngle());
 	}
+	
+	public void ds2L() {
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
+		double currentAngle = ahrs.getAngle();
+	
+		if (state == 0) {
+			if (Timer.getFPGATimestamp() < time + 3) {
+			} else {
+				state = 1;
+			}
+		} else if (state == 1) {
+			if (currentDistance < 5000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
+				System.out.println("state 1");
+			} else {
+				state = 2;
+				System.out.println("Start state 2");
+			}
+		}
+			//second stage begins, we are turning -90 degrees 
+		else if (state == 2) {
+			if (currentAngle > -90+2) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(-90)); 
+				System.out.println("state 2");
+			} else {
+				state = 3;
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 0);
+				
+			}
+		}
+		
+		else if (state == 3) {
+			if (currentDistance < 5000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(6667), turnToAngle(-90));
+			} else {
+				state = 4;
+			}					
+		}
+			
+		else if (state==4) {
+			if (currentAngle < -2) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
+			} else {
+				state = 5;
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
+			}
+		}
+			
+		else if (state == 5) {
+			if (currentDistance < 5000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
+				//elevatorPID.setSetpoint(300);
+				elevator.elevatorMove(.6f);
+			} else {
+				state = 7;
+				time = Timer.getFPGATimestamp();
+			}
+//		} //else if (state == 6) {
+//			currentUltrasonic = ai.getValue();
+//			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
+//				driveTrain.drive.arcadeDrive(driveToFeet(.25), turnToAngle(0));
+//			} else {
+//				state = 7;
+//			}
+		} else if (state == 7) {
+			if (Timer.getFPGATimestamp() < time + .4) {
+				intake.startYeet();
+				//empty yeet
+			} else {
+				state = 8;
+			}
+		}
+		else if (state == 8) { 
+			if (currentDistance > 5000) {
+				driveTrain.drive.arcadeDrive(backToFeet(5000), turnToAngle(0));
+			} else {
+				state = 9;
+			}			
+		}
+		else if (state == 9) {
+			if (currentAngle > -90+2) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
+			} else {
+				state = 10;
+			}
+		}
+	}
+	
+	public void ds2R() {
+		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
+		double currentAngle = ahrs.getAngle(); 
+	
+		if (state == 0) {
+			if (Timer.getFPGATimestamp() < time + 3) {
+			} else {
+				state = 1;
+			}
+		} else if (state == 1) {
+			if (currentDistance < 5000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
+			} else {
+				state = 2;
+			}
+		
+		} else if (state == 2) {
+			if (currentAngle < 90-2) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(90)); 
+			} else {
+				state = 3;
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
+			}
+			
+		} else if (state == 3) {
+			if (currentDistance >  5000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(90));
+				//zoom zoom
+			} else {
+				state = 4;
+			}
+			
+		} else if (state == 4) {
+			if (currentAngle > 2) {
+				driveTrain.drive.arcadeDrive(0,turnToAngle(0));
+			} else {
+				state = 5;
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
+			}	
+			
+		} else if (state == 5) {
+			if (currentDistance < 5000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
+				//elevatorPID.setSetpoint(300);
+				elevator.elevatorMove(.6f);
+			} else {
+				state = 7;
+				time = Timer.getFPGATimestamp();
+			}
+//		} else if (state == 6) {
+//			currentUltrasonic = ai.getValue();
+//			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
+//				driveTrain.drive.arcadeDrive(driveToFeet(.25), turnToAngle(0));
+//			} else {
+//				state = 7;
+//			}
+		} else if (state == 7) {
+			if (Timer.getFPGATimestamp() < time + .4) {
+				intake.startYeet();
+				//empty yeet
+			} else {
+				state = 8;
+			}
+		
+		} else if (state == 8) { 
+			if (currentDistance > 5000) {
+				driveTrain.drive.arcadeDrive(backToFeet(5000), turnToAngle(0));
+			} else {
+				state = 9;
+			}			
+		
+		} else if (state == 9) {
+			if (currentAngle < 90) {
+				driveTrain.drive.arcadeDrive(0, turnToAngle(90));
+			} else {
+				state = 10;
+			}
+		}
+	}
+	
+	@Override
+	public void autonomousInit() {
+		m_autonomousCommand = m_chooser.getSelected();
+
+		/*
+		 * String autoSelected = SmartDashboard.getString("Auto Selector",
+		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+		 * = new MyAutoCommand(); break; case "Default Auto": default:
+		 * autonomousCommand = new ExampleCommand(); break; }
+		 */
+
+		// schedule the autonomous command (example)
+		if (m_autonomousCommand != null) {
+			m_autonomousCommand.start();
+		}
+		
+		//This should set the feedback from motorFR as 1ms per sample and unlimited bandwidth
+		RobotMap.motorBR.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
+		//Sets the feedback device as a quad encoder, which is what the cimcoder is
+		RobotMap.motorBR.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
+		RobotMap.motorBR.setSelectedSensorPosition(0, 0, 0);
+		
+		RobotMap.evelator.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
+		RobotMap.evelator.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
+		RobotMap.evelator.setSelectedSensorPosition(0, 0, 0);
+		//new ArmsDown();
+		
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+		boolean cross = SmartDashboard.getBoolean("DB/Button 0", false);
+		boolean ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
+		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
+		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
+		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
+		double scaleData = SmartDashboard.getNumber("DB/Slider 1", 0.0);
+		
+		initTime = Timer.getFPGATimestamp();
+		
+//		if (scaleData > 2) {
+//			if (ds1) {
+//				if (gameData.substring(0, 1) == "L") {
+//					autoChoice = "ds1cL";
+//				} else {
+//					autoChoice = "ds1cR";
+//				}
+//			} else if (ds3) {
+//				if (gameData.substring(0, 1) == "L") {
+//					autoChoice = "ds3cL";
+//				} else {
+//					autoChoice = "ds3cR";
+//				}
+//			}
+//		} else if (cross) {
+//			if (ds1) {
+//				autoChoice = "ds1cross";
+//			} else if (ds2) {
+//				autoChoice = "ds2cross";
+//			} else if (ds3) {
+//				autoChoice = "ds3cross";
+//			}
+//		} else if (ds1) {
+//			if (gameData.substring(0, 1) == "L") {
+//				autoChoice = "ds1L";
+//			} else {
+//				autoChoice = "ds1R";
+//			}
+//		} else if (ds2) {
+//			if (gameData.substring(0, 1) == "L") {
+//				autoChoice = "ds2L";
+//			} else {
+//				autoChoice = "ds2R";
+//			}
+//		} else if (ds3) {
+//			if (gameData.substring(0, 1) = "L") {
+//				autoChoice = "ds3L";
+//			} else {
+//				autoChoice = "ds3R";
+//			}
+//		}
+		
+		if (gameData.substring(0, 1) == "L") {
+			autoChoice = "ds2L";
+		} else if (gameData.substring(0, 1) == "R") {
+			autoChoice = "ds2R";
+		}
+		
+		if (dashData > 2) {
+			state = 0;
+		}
+		
+		time = Timer.getFPGATimestamp();
+		ahrs.reset();
+	}
+
+	/**
+	 * This function is called periodically during autonomous.
+	 */
+	@Override
+	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
+		
+		//System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
+		
+//		switch (autoChoice) {
+//		case "ds1L": ds1L();
+//		case "ds1R": ds1R();
+//		case "ds2L": ds2L();
+//		case "ds2R": ds2R();
+//		case "ds3L": ds3L();
+//		case "ds3R": ds3R();
+//		case "ds1cR" : ds1cR();
+//		case "ds1cL" : ds1cL();
+//		case "ds3cR" : ds3cR();
+//		case "ds3cL" : ds3cL();
+//		case "ds1cross": ds1cross();
+//		case "ds3cross": ds3cross();
+//		case "ds2cross" : ds2cross();
+//		default: autoTest();
+//		}
+		
+		//autoTest();
+		
+		//ds2L();
+		//ds1cross();
+//		System.out.println(ahrs.getAngle());
+//		System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
+		System.out.println(autoChoice);
+	}
+	
+	
 	
 	public void ds1L() {
 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
@@ -444,90 +625,7 @@ public class Robot extends TimedRobot {
 		}
 	}
 	
-	public void ds2L() {
-		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
-		double currentAngle = ahrs.getAngle();
 	
-		if (state == 0) {
-			if (Timer.getFPGATimestamp() < time + 3) {
-			} else {
-				state = 1;
-			}
-		} else if (state == 1) {
-			if (currentDistance < 5000) {
-				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
-			} else {
-				state = 2;
-				System.out.println("Start state 2");
-			}
-		}
-			//second stage begins, we are turning -90 degrees 
-		else if (state == 2) {
-			if (currentAngle > -90+2) {
-				driveTrain.drive.arcadeDrive(0, turnToAngle(-90)); 
-				System.out.println("state 2");
-			} else {
-				state = 3;
-				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 0);
-				
-			}
-		}
-		
-		else if (state == 3) {
-			if (currentDistance < 5000) {
-				driveTrain.drive.arcadeDrive(driveToFeet(6667), turnToAngle(-90));
-			} else {
-				state = 4;
-			}					
-		}
-			
-		else if (state==4) {
-			if (currentAngle < -2) {
-				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
-			} else {
-				state = 5;
-				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
-			}
-		}
-			
-		else if (state == 5) {
-			if (currentDistance < 5000) {
-				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
-				elevatorPID.setSetpoint(300);
-			} else {
-				state = 6;
-				time = Timer.getFPGATimestamp();
-			}
-		} //else if (state == 6) {
-//			currentUltrasonic = ai.getValue();
-//			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
-//				driveTrain.drive.arcadeDrive(driveToFeet(.25), turnToAngle(0));
-//			} else {
-//				state = 7;
-//			}
-//		} else if (state == 7) {
-//			if (Timer.getFPGATimestamp() < time + .4) {
-//				intake.startYeet();
-//				//empty yeet
-//			} else {
-//				state = 8;
-//			}
-//		}
-//		else if (state == 8) { 
-//			if (currentDistance > 12608) {
-//				driveTrain.drive.arcadeDrive(backToFeet(12608), turnToAngle(0));
-//			} else {
-//				state = 9;
-//			}			
-//		}
-//		else if (state == 9) {
-//			if (currentAngle > -90+2) {
-//				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
-//			} else {
-//				state = 10;
-//			}
-//		}
-	}
 	
 	public void ds1cross() {
 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
@@ -655,84 +753,7 @@ public class Robot extends TimedRobot {
 	 	}
 	}
 	
-	public void ds2R() {
-		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
-		double currentAngle = ahrs.getAngle(); 
 	
-		if (state == 0) {
-			if (Timer.getFPGATimestamp() < time + 3) {
-			} else {
-				state = 1;
-			}
-		} else if (state == 1) {
-			if (currentDistance < 14709) {
-				driveTrain.drive.arcadeDrive(driveToFeet(14709), turnToAngle(0));
-			} else {
-				state = 2;
-			}
-		
-		} else if (state == 2) {
-			if (currentAngle < 90-2) {
-				driveTrain.drive.arcadeDrive(0, turnToAngle(90)); 
-			} else {
-				state = 3;
-				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
-			}
-			
-		} else if (state == 3) {
-			if (currentDistance >  16390) {
-				driveTrain.drive.arcadeDrive(driveToFeet(16390), turnToAngle(90));
-				//zoom zoom
-			} else {
-				state = 4;
-			}
-			
-		} else if (state == 4) {
-			if (currentAngle > 2) {
-				driveTrain.drive.arcadeDrive(0,turnToAngle(0));
-			} else {
-				state = 5;
-				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
-			}	
-			
-		} else if (state == 5) {
-			if (currentDistance < 14709) {
-				driveTrain.drive.arcadeDrive(driveToFeet(14709), turnToAngle(0));
-				elevatorPID.setSetpoint(300);
-			} else {
-				state = 6;
-				time = Timer.getFPGATimestamp();
-			}
-		} else if (state == 6) {
-			currentUltrasonic = ai.getValue();
-			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
-				driveTrain.drive.arcadeDrive(driveToFeet(.25), turnToAngle(0));
-			} else {
-				state = 7;
-			}
-		} else if (state == 7) {
-			if (Timer.getFPGATimestamp() < time + .4) {
-				intake.startYeet();
-				//empty yeet
-			} else {
-				state = 8;
-			}
-		
-		} else if (state == 8) { 
-			if (currentDistance > 12608) {
-				driveTrain.drive.arcadeDrive(backToFeet(12608), turnToAngle(0));
-			} else {
-				state = 9;
-			}			
-		
-		} else if (state == 9) {
-			if (currentAngle < 90) {
-				driveTrain.drive.arcadeDrive(0, turnToAngle(90));
-			} else {
-				state = 10;
-			}
-		}
-	}
 	
 	public void ds1cL() { //driver station 1 scale left
 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
