@@ -35,15 +35,15 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void drive(double left, double right) {
-		//drive.tankDrive(left, right);
-		drive.arcadeDrive(left, right);
+		drive.tankDrive(left, right);
+		//drive.arcadeDrive(left, right);
 	}
 	
 	public void drive(Joystick joy) {
 		inputSpeed = -joy.getRawAxis(1);
-		inputTurn = -joy.getRawAxis(4); //For arcade drive
+		//inputTurn = -joy.getRawAxis(4); //For arcade drive
 		
-		//inputTurn = joy.getRawAxis(5);	//For tank drive
+		inputTurn = joy.getRawAxis(5);	//For tank drive
 		
 		drive(inputSpeed, -inputTurn);
 	}

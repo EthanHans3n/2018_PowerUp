@@ -51,7 +51,7 @@ public class ElevatorUp extends Command {
 ////        		Robot.elevatorPID.setSetpoint(RobotMap.evelator.getSelectedSensorPosition(0));
 ////        	}
 //    	}
-    	Robot.elevator.elevatorMove(-.8f);
+    	Robot.elevator.elevatorMove(-1f);
     }
 
     // Make this return true when this Command no longer needs to run execute()
