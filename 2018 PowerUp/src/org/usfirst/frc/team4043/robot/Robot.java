@@ -105,9 +105,9 @@ public class Robot extends TimedRobot {
 		double rotateSpeed;
 		
 		if (currentAngle > wantedAngle + 2) { 					//If we are too far to the right of where we want to be...
-			rotateSpeed = .7d;	//turn left (negative number)
+			rotateSpeed = -.7d;	//turn left (negative number)
 		} else if (currentAngle < wantedAngle - 2) {			//Otherwise, if we are too far left ...
-			rotateSpeed = -.7d;	//turn right (positive number)
+			rotateSpeed = .7d;	//turn right (positive number)
 		} else {												//If we are right on track ...
 			rotateSpeed = 0d;									//don't rotate
 		}
@@ -131,7 +131,7 @@ public class Robot extends TimedRobot {
 		double driveSpeed;
 		
 		if (currentDistance < wantedDistance - 300) {
-			driveSpeed = 0.5d;
+			driveSpeed = 0.7d;
 		} else {
 			driveSpeed = 0d;
 		}
@@ -154,7 +154,7 @@ public class Robot extends TimedRobot {
 		double driveSpeed;
 		
 		if (currentDistance > wantedDistance) {
-			driveSpeed = 0.5d;
+			driveSpeed = -0.7d;
 		} else {
 			driveSpeed = 0d;
 		}
@@ -199,8 +199,8 @@ public class Robot extends TimedRobot {
 				state = 1;
 			}
 		} else if (state == 1) {
-			if (currentDistance < 5000) {
-				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
+			if (currentDistance < 6000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(6000), turnToAngle(0));
 				System.out.println("state 1");
 			} else {
 				state = 2;
@@ -220,8 +220,8 @@ public class Robot extends TimedRobot {
 		}
 		
 		else if (state == 3) {
-			if (currentDistance < 5000) {
-				driveTrain.drive.arcadeDrive(driveToFeet(6667), turnToAngle(-90));
+			if (currentDistance < 7000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(7000), turnToAngle(-90));
 			} else {
 				state = 4;
 			}					
@@ -232,15 +232,15 @@ public class Robot extends TimedRobot {
 				driveTrain.drive.arcadeDrive(0, turnToAngle(0));
 			} else {
 				state = 5;
-				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
+				RobotMap.motorBR.setSelectedSensorPosition(0, 0, 0);
 			}
 		}
 			
 		else if (state == 5) {
-			if (currentDistance < 5000) {
-				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(0));
+			if (currentDistance < 6000) {
+				driveTrain.drive.arcadeDrive(driveToFeet(6000), turnToAngle(0));
 				//elevatorPID.setSetpoint(300);
-				elevator.elevatorMove(.6f);
+				elevator.elevatorMove(-.6f);
 			} else {
 				state = 7;
 				time = Timer.getFPGATimestamp();
@@ -253,25 +253,11 @@ public class Robot extends TimedRobot {
 //				state = 7;
 //			}
 		} else if (state == 7) {
-			if (Timer.getFPGATimestamp() < time + .4) {
+			if (Timer.getFPGATimestamp() < time + 2) {
 				intake.startYeet();
 				//empty yeet
 			} else {
 				state = 8;
-			}
-		}
-		else if (state == 8) { 
-			if (currentDistance > 5000) {
-				driveTrain.drive.arcadeDrive(backToFeet(5000), turnToAngle(0));
-			} else {
-				state = 9;
-			}			
-		}
-		else if (state == 9) {
-			if (currentAngle > -90+2) {
-				driveTrain.drive.arcadeDrive(0, turnToAngle(-90));
-			} else {
-				state = 10;
 			}
 		}
 	}
@@ -378,7 +364,7 @@ public class Robot extends TimedRobot {
 		RobotMap.motorBR.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		//Sets the feedback device as a quad encoder, which is what the cimcoder is
 		RobotMap.motorBR.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
-		RobotMap.motorBR.setSelectedSensorPosition(0, 0, 0);
+		RobotMap.motorBR.setSelectedSensorPosition(0, 0, 10);
 		
 		RobotMap.evelator.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		RobotMap.evelator.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
@@ -432,21 +418,22 @@ public class Robot extends TimedRobot {
 //			}
 //		}
 		
-		if (cross) {
-			autoChoice = "cross";
-		} else if (gameData.length() > 0) {
-			if (gameData.charAt(0) == 'L') {
-				autoChoice = "ds2L";
-			} else if (gameData.charAt(0) == 'R') {
-				autoChoice = "ds2R";
-			}
-		}
+//		if (cross) {
+//			autoChoice = "cross";
+//		} else if (gameData.length() > 0) {
+//			if (gameData.charAt(0) == 'L') {
+//				autoChoice = "ds2L";
+//			} else if (gameData.charAt(0) == 'R') {
+//				autoChoice = "ds2R";
+//			}
+//		}
+//		
+		autoChoice = "cross";
 		
 		
-		
-		if (dashData > 2) {
-			state = 0;
-		}
+//		if (dashData > 2) {
+//			state = 0;
+//		}
 		
 		time = Timer.getFPGATimestamp();
 		ahrs.reset();
@@ -486,14 +473,13 @@ public class Robot extends TimedRobot {
 			}
 		}
 		
-		
+//		cross();
 		//autoTest();
 		
-		//ds2L();
-		//ds1cross();
-//		System.out.println(ahrs.getAngle());
+		ds2L();
+		System.out.println(ahrs.getAngle());
 //		System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
-		System.out.println(cross);
+//		System.out.println(cross);
 	}
 	
 	

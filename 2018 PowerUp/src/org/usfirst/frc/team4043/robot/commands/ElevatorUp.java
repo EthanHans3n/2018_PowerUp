@@ -8,10 +8,13 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ElevatorUp extends Command {
 
-    public ElevatorUp() {
+	double inAxis;
+	
+    public ElevatorUp(double axis) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.elevator);
+    	inAxis = axis;
     }
 
     // Called just before this Command runs the first time
@@ -21,37 +24,7 @@ public class ElevatorUp extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-//    	float axisUp = (float)OI.getCoStick().getRawAxis(3);
-//    	float axisDown = (float)OI.getCoStick().getRawAxis(2);
-//    	System.out.println(axisUp);
-//    	if(axisUp > axisDown) {
-//    		if (axisUp > 0.1f){
-//        		Robot.elevator.elevatorMove(axisUp);
-//        		Robot.elevatorPID.disable();
-//        	}
-//        	else if (axisUp < -0.3f) {
-//        		Robot.elevator.elevatorMove(axisUp);
-//        		Robot.elevatorPID.disable();
-//        	}
-////        	else {
-////        		Robot.elevatorPID.enable();
-////        		Robot.elevatorPID.setSetpoint(RobotMap.evelator.getSelectedSensorPosition(0));
-////        	}
-//    	} else {
-//    		if (axisDown > 0.1f){
-//        		Robot.elevator.elevatorMove(-axisDown);
-//        		Robot.elevatorPID.disable();
-//        	}
-//        	else if (axisDown < -0.3f) {
-//        		Robot.elevator.elevatorMove(-axisDown);
-//        		Robot.elevatorPID.disable();
-//        	}
-////        	else {
-////        		Robot.elevatorPID.enable();
-////        		Robot.elevatorPID.setSetpoint(RobotMap.evelator.getSelectedSensorPosition(0));
-////        	}
-//    	}
-    	Robot.elevator.elevatorMove(-1f);
+    	Robot.elevator.elevatorMove(-inAxis);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -61,6 +34,7 @@ public class ElevatorUp extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.elevator.elevatorStop();
     }
 
     // Called when another command which requires one or more of the same
