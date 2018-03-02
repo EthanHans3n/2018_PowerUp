@@ -1082,6 +1082,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		if (Robot.m_oi.coStick.getRawAxis(3) > .1) {
+    		//Move elevator up at speed of right trigger
+    		Robot.elevator.elevatorMove(Robot.m_oi.coStick.getRawAxis(3));
+    	} else if (Robot.m_oi.coStick.getRawAxis(2) > .1) {
+    		//if the left trigger is above deadband, run the elevator down at left trigger speed
+    		Robot.elevator.elevatorMove(-Robot.m_oi.coStick.getRawAxis(2));
+    	} else {
+    		//otherwise, stop elevator
+    		Robot.elevator.elevatorMove(0);
+    	}
 	}
 
 	/**
