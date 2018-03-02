@@ -74,11 +74,13 @@ public class OI {
 		intakeStart.whenReleased(new StopIntake());
 		yeetStart.whenReleased(new StopIntake());
 		
-		if (driveStick.getRawAxis(3) > .1) {
-			new ElevatorUp(driveStick.getRawAxis(3));
-		} else if (driveStick.getRawAxis(2) > .1) {
-			new ElevatorDown(driveStick.getRawAxis(2));
-		}
+//		if (driveStick.getRawAxis(3) > .1) {
+//			new ElevatorUp(driveStick.getRawAxis(3));
+//		} else if (driveStick.getRawAxis(2) > .1) {
+//			new ElevatorDown(driveStick.getRawAxis(2));
+//		}
+		evelatorUp.whileHeld(new ElevatorUp(.7));
+		evelatorDown.whileHeld(new ElevatorUp(-.5));
 		
 		evelatorUp.whenReleased(new ElevatorStop());
 		evelatorDown.whenReleased(new ElevatorStop());
