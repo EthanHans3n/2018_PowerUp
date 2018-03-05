@@ -54,7 +54,7 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
-	public Joystick driveStick = new Joystick(5);
+	public Joystick driveStick = new Joystick(0);
 	public static Joystick coStick = new Joystick(1);
 	public Button yeetStart = new JoystickButton(driveStick, 6);
 	public Button intakeStart  = new JoystickButton(driveStick, 5);
