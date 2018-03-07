@@ -374,61 +374,51 @@ public class Robot extends TimedRobot {
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
 		cross = SmartDashboard.getBoolean("DB/Button 0", false);
-//		boolean ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
-//		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
-//		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
+		boolean ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
+		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
+		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
 		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
-//		double scaleData = SmartDashboard.getNumber("DB/Slider 1", 0.0);
+		double scaleData = SmartDashboard.getNumber("DB/Slider 1", 0.0);
 		
 		initTime = Timer.getFPGATimestamp();
 		
-//		if (scaleData > 2) {
-//			if (ds1) {
-//				if (gameData.substring(0, 1) == "L") {
-//					autoChoice = "ds1cL";
-//				} else {
-//					autoChoice = "ds1cR";
-//				}
-//			} else if (ds3) {
-//				if (gameData.substring(0, 1) == "L") {
-//					autoChoice = "ds3cL";
-//				} else {
-//					autoChoice = "ds3cR";
-//				}
-//			}
-//		} else if (cross) {
-//			autoChoice = "cross";
-//		} else if (ds1) {
-//			if (gameData.substring(0, 1) == "L") {
-//				autoChoice = "ds1L";
-//			} else {
-//				autoChoice = "ds1R";
-//			}
-//		} else if (ds2) {
-//			if (gameData.substring(0, 1) == "L") {
-//				autoChoice = "ds2L";
-//			} else {
-//				autoChoice = "ds2R";
-//			}
-//		} else if (ds3) {
-//			if (gameData.substring(0, 1) = "L") {
-//				autoChoice = "ds3L";
-//			} else {
-//				autoChoice = "ds3R";
-//			}
-//		}
-		
-//		if (cross) {
-//			autoChoice = "cross";
-//		} else if (gameData.length() > 0) {
-//			if (gameData.charAt(0) == 'L') {
-//				autoChoice = "ds2L";
-//			} else if (gameData.charAt(0) == 'R') {
-//				autoChoice = "ds2R";
-//			}
-//		}
-//		
-		autoChoice = "cross";
+		if (cross) {
+			autoChoice = "cross";
+		} else if (ds2) {
+			if (gameData.charAt(0) == 'L') {
+				autoChoice = "ds2L";
+			} else if (gameData.charAt(0) == 'R') {
+				autoChoice = "ds2R";
+			}
+		} else if (ds1) {
+			if (scaleData > 2) {
+				if (gameData.charAt(1) == 'L') {
+					autoChoice = "ds1cL";
+				} else {
+					autoChoice = "cross";
+				}
+			} else {
+				if (gameData.charAt(0) == 'L') {
+					autoChoice = "ds1L";
+				} else {
+					autoChoice = "cross";
+				}
+			}
+		} else if (ds3) {
+			if (scaleData > 2) {
+				if (gameData.charAt(1) == 'R') {
+					autoChoice = "ds3cR";
+				} else {
+					autoChoice = "cross";
+				}
+			} else {
+				if (gameData.charAt(0) == 'R') {
+					autoChoice = "ds1R";
+				} else {
+					autoChoice = "cross";
+				}
+			}
+		}
 		
 		
 //		if (dashData > 2) {
@@ -446,40 +436,32 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		
-		//System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
-		
-//		switch (autoChoice) {
-//		case "ds1L": ds1L();
-//		case "ds1R": ds1R();
-//		case "ds2L": ds2L();
-//		case "ds2R": ds2R();
-//		case "ds3L": ds3L();
-//		case "ds3R": ds3R();
-//		case "ds1cR" : ds1cR();
-//		case "ds1cL" : ds1cL();
-//		case "ds3cR" : ds3cR();
-//		case "ds3cL" : ds3cL();
-//		case "cross": cross();
-//		default: autoTest();
-//		}
-		
-		if (cross) {
-			cross();
-		} else {
-			if (autoChoice == "ds2L") {
-				ds2L();
-			} else if (autoChoice == "ds2R") {
-				ds2R();
-			}
+		switch (autoChoice) {
+		case "ds1L": ds1L();
+		case "ds2L": ds2L();
+		case "ds2R": ds2R();
+		case "ds3R": ds3R();
+		case "ds1cL" : ds1cL();
+		case "ds3cR" : ds3cR();
+		case "cross": cross();
+		default: autoTest();
 		}
 		
-//		cross();
-		//autoTest();
-		
-		ds2L();
-		System.out.println(ahrs.getAngle());
-//		System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
-//		System.out.println(cross);
+		if (autoChoice == "cross") {
+			cross();
+		} else if (autoChoice == "ds2L") {
+			ds2L();
+		} else if (autoChoice == "ds2R") {
+			ds2R();
+		} else if (autoChoice == "ds1L") {
+			ds1L();
+		} else if (autoChoice == "ds3R") {
+			ds3R();
+		} else if (autoChoice == "ds1cL") {
+			ds1cL();
+		} else if (autoChoice == "ds3cR") {
+			ds3cR();
+		}
 	}
 	
 	
