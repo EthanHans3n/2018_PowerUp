@@ -15,10 +15,12 @@ public class Elevator extends Subsystem {
 	public void elevatorMove(double axis) {
 		Robot.elevatorPID.disable();
 		RobotMap.evelator.set(axis);
+//		RobotMap.elevator2.set(axis);
 	}
 	
 	public void elevatorStop() {
 		RobotMap.evelator.set(0);
+//		RobotMap.elevator2.set(0);
 	}
 
     public void initDefaultCommand() {

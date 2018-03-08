@@ -37,6 +37,7 @@ public class RobotMap {
 	public static WPI_TalonSRX intakeR = new WPI_TalonSRX(16);		
 	
 	public static WPI_TalonSRX evelator = new WPI_TalonSRX(11);
+//	public static WPI_TalonSRX evelator2 = new WPI_TalonSRX(12);
 	public static WPI_TalonSRX armVert = new WPI_TalonSRX(3);		//Change this
 	
 	public static Solenoid shifter = new Solenoid(7, 4);
