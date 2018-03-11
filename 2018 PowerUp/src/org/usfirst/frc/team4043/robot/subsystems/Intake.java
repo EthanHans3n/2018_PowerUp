@@ -25,7 +25,11 @@ public class Intake extends Subsystem {
     }
     
     public void armsDown() {
-    	RobotMap.armVert.set(-.3);
+    	RobotMap.armVert.set(-1);
+    }
+    
+    public void armsUp() {
+    	RobotMap.armVert.set(1);
     }
     
     public void armsStop() {

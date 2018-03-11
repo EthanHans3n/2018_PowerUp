@@ -7,12 +7,15 @@
 
 package org.usfirst.frc.team4043.robot;
 
+import org.usfirst.frc.team4043.robot.commands.ArmsDown;
+import org.usfirst.frc.team4043.robot.commands.ArmsUp;
 import org.usfirst.frc.team4043.robot.commands.ElevatorDown;
 import org.usfirst.frc.team4043.robot.commands.ElevatorStop;
 import org.usfirst.frc.team4043.robot.commands.ElevatorUp;
 import org.usfirst.frc.team4043.robot.commands.OperationKeapDaKewb;
 import org.usfirst.frc.team4043.robot.commands.Shift;
 import org.usfirst.frc.team4043.robot.commands.SpitOut;
+import org.usfirst.frc.team4043.robot.commands.StopArms;
 import org.usfirst.frc.team4043.robot.commands.StopIntake;
 import org.usfirst.frc.team4043.robot.commands.SuckIn;
 import edu.wpi.first.wpilibj.Joystick;
@@ -58,12 +61,11 @@ public class OI {
 	public static Joystick coStick = new Joystick(1);
 	public Button yeetStart = new JoystickButton(driveStick, 6);
 	public Button intakeStart  = new JoystickButton(driveStick, 5);
-	public Button evelatorUp = new JoystickButton(coStick, 4);
-	public Button evelatorDown = new JoystickButton(coStick, 1);
-	public Button elevatorSwitch = new JoystickButton(coStick, 2);
 	public Button keepCube = new JoystickButton(driveStick, 1);
 	public Button shifter = new JoystickButton(driveStick, 2);
 	
+	public Button armsUp = new JoystickButton(coStick, 2);
+	public Button armsDown = new JoystickButton(coStick, 1);
 	//public Trigger elevatorTrigUp = new JoystickButton(driveStick, 3);
 	//public Trigger elevatorTrigDown = new JoystickButton(driveStick, 2);
 	
@@ -74,16 +76,10 @@ public class OI {
 		intakeStart.whenReleased(new StopIntake());
 		yeetStart.whenReleased(new StopIntake());
 		
-//		if (driveStick.getRawAxis(3) > .1) {
-//			new ElevatorUp(driveStick.getRawAxis(3));
-//		} else if (driveStick.getRawAxis(2) > .1) {
-//			new ElevatorDown(driveStick.getRawAxis(2));
-//		}
-		evelatorUp.whileHeld(new ElevatorUp(.7));
-		evelatorDown.whileHeld(new ElevatorUp(-.5));
-		
-		evelatorUp.whenReleased(new ElevatorStop());
-		evelatorDown.whenReleased(new ElevatorStop());
+		armsUp.whileHeld(new ArmsUp());
+		armsDown.whileHeld(new ArmsDown());
+		armsUp.whenReleased(new StopArms());
+		armsDown.whenReleased(new StopArms());
 		
 		keepCube.whenPressed(new OperationKeapDaKewb());
 		shifter.toggleWhenPressed(new Shift());

@@ -22,11 +22,7 @@ public class ArmsDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Timer.getFPGATimestamp() < Robot.initTime + 4) {
-    		Robot.intake.armsDown();
-    	} else {
-    		Robot.intake.armsStop();
-    	}
+    	Robot.intake.armsDown();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -36,6 +32,7 @@ public class ArmsDown extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.intake.armsStop();
     }
 
     // Called when another command which requires one or more of the same

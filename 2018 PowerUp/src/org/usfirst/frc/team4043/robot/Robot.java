@@ -287,7 +287,7 @@ public class Robot extends TimedRobot {
 			}
 			
 		} else if (state == 3) {
-			if (currentDistance >  5000) {
+			if (currentDistance > 5000) {
 				driveTrain.drive.arcadeDrive(driveToFeet(5000), turnToAngle(90));
 				//zoom zoom
 			} else {
@@ -343,6 +343,9 @@ public class Robot extends TimedRobot {
 	}
 	
 	boolean cross;
+	boolean ds1;
+	boolean ds2;
+	boolean ds3;
 	
 	@Override
 	public void autonomousInit() {
@@ -374,52 +377,12 @@ public class Robot extends TimedRobot {
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
 		cross = SmartDashboard.getBoolean("DB/Button 0", false);
-		boolean ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
-		boolean ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
-		boolean ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
+		ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
+		ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
+		ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
 		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
-		double scaleData = SmartDashboard.getNumber("DB/Slider 1", 0.0);
 		
 		initTime = Timer.getFPGATimestamp();
-		
-		if (cross) {
-			autoChoice = "cross";
-		} else if (ds2) {
-			if (gameData.charAt(0) == 'L') {
-				autoChoice = "ds2L";
-			} else if (gameData.charAt(0) == 'R') {
-				autoChoice = "ds2R";
-			}
-		} else if (ds1) {
-			if (scaleData > 2) {
-				if (gameData.charAt(1) == 'L') {
-					autoChoice = "ds1cL";
-				} else {
-					autoChoice = "cross";
-				}
-			} else {
-				if (gameData.charAt(0) == 'L') {
-					autoChoice = "ds1L";
-				} else {
-					autoChoice = "cross";
-				}
-			}
-		} else if (ds3) {
-			if (scaleData > 2) {
-				if (gameData.charAt(1) == 'R') {
-					autoChoice = "ds3cR";
-				} else {
-					autoChoice = "cross";
-				}
-			} else {
-				if (gameData.charAt(0) == 'R') {
-					autoChoice = "ds1R";
-				} else {
-					autoChoice = "cross";
-				}
-			}
-		}
-		
 		
 //		if (dashData > 2) {
 //			state = 0;
@@ -436,32 +399,27 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		
-		switch (autoChoice) {
-		case "ds1L": ds1L();
-		case "ds2L": ds2L();
-		case "ds2R": ds2R();
-		case "ds3R": ds3R();
-		case "ds1cL" : ds1cL();
-		case "ds3cR" : ds3cR();
-		case "cross": cross();
-		default: autoTest();
+		if (Timer.getFPGATimestamp() < initTime + 10 && Timer.getFPGATimestamp() > initTime + 4){
+			RobotMap.armVert.set(1);
+		} else {
+			RobotMap.armVert.stopMotor();
 		}
 		
-		if (autoChoice == "cross") {
-			cross();
-		} else if (autoChoice == "ds2L") {
-			ds2L();
-		} else if (autoChoice == "ds2R") {
-			ds2R();
-		} else if (autoChoice == "ds1L") {
-			ds1L();
-		} else if (autoChoice == "ds3R") {
-			ds3R();
-		} else if (autoChoice == "ds1cL") {
-			ds1cL();
-		} else if (autoChoice == "ds3cR") {
-			ds3cR();
-		}
+		cross();
+		
+//		if (cross) {
+//			System.out.println("cross");
+//			cross();
+//		} else if (ds2) {
+//			System.out.println("ds2L");
+//			ds2L();
+//		} else if (ds1) {
+//			System.out.println("ds1L");
+//			ds1L();
+//		} else if (ds3) {
+//			System.out.println("ds3R");
+//			ds3R();
+//		}
 	}
 	
 	
@@ -616,7 +574,7 @@ public class Robot extends TimedRobot {
 			}
 		} else if (state == 1) {
 			if (currentDistance < 25043) { //if the robot hasn't moved forward
-				driveTrain.drive.arcadeDrive(driveToFeet(25043), turnToAngle(0)); //drive 2 feet forward
+				driveTrain.drive.arcadeDrive(driveToFeet(25043), turnToAngle(0)); //drive 12ish feet forward
 			} else {
 				state = 2;
 			}
@@ -767,6 +725,8 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		
+		RobotMap.armVert.set(0);
 	}
 	
 	/**
