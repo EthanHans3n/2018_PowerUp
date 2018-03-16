@@ -20,8 +20,8 @@ public class Intake extends Subsystem {
     	RobotMap.intakeR.set(-.4);
     }
     public void keepCube() {
-    	RobotMap.intakeL.set(-.2);
-        RobotMap.intakeR.set(.2);
+    	RobotMap.intakeL.set(-.6);
+        RobotMap.intakeR.set(.6);
     }
     
     public void armsDown() {
