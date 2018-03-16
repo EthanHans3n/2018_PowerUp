@@ -43,11 +43,8 @@ public class Robot extends TimedRobot {
 	public static Shifter shifter;
 	public static OI m_oi;
 	
-	public static boolean keepState = true;
 	public static double initTime = 0;
 	int state = 1;
-	double currentUltrasonic = 0;
-	public static boolean toggleKeep = false;
 	String gameData;
 	String autoChoice = "";
 	double time = Timer.getFPGATimestamp();
@@ -69,7 +66,6 @@ public class Robot extends TimedRobot {
 		elevator = new Elevator();
 		shifter = new Shifter();
 		m_oi = new OI();
-		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
 
@@ -112,17 +108,6 @@ public class Robot extends TimedRobot {
 			rotateSpeed = 0d;									//don't rotate
 		}
 		
-		//Just sanity checks for our output. Turning for arcade drive has to be between -1 and 1
-//		if (rotateSpeed > 1) {												
-//			rotateSpeed = 1;
-//		} else if (rotateSpeed < -1) {
-//			rotateSpeed = -1;
-//		} else if (rotateSpeed < .1 && rotateSpeed > 0) {		//Checks for a value small enough that it won't turn the robot
-//			rotateSpeed = .1;
-//		} else if (rotateSpeed > -.1 && rotateSpeed < 0) {		//Checks for a value small enough that it won't turn the robot
-//			rotateSpeed = -.1;
-//		}
-		
 		return rotateSpeed;
 	}
 	
@@ -136,16 +121,6 @@ public class Robot extends TimedRobot {
 			driveSpeed = 0d;
 		}
 		
-//		if (driveSpeed > 1) {
-//			driveSpeed = 1;
-//		} else if (driveSpeed < .1 && driveSpeed > 0) {
-//			driveSpeed = .1d;
-//		} else if (driveSpeed < -1) {
-//			driveSpeed = -1;
-//		} else if (driveSpeed > -.1 && driveSpeed < 0) {
-//			driveSpeed = -.1d;
-//		}
-		
 		return driveSpeed;
 	}
 	
@@ -158,16 +133,6 @@ public class Robot extends TimedRobot {
 		} else {
 			driveSpeed = 0d;
 		}
-		
-//		if (driveSpeed > 1) {
-//			driveSpeed = 1;
-//		} else if (driveSpeed < .1 && driveSpeed > 0) {
-//			driveSpeed = .1d;
-//		} else if (driveSpeed < -1) {
-//			driveSpeed = -1;
-//		} else if (driveSpeed > -.1 && driveSpeed < 0) {
-//			driveSpeed = -.1d;
-//		}
 		
 		return driveSpeed;
 	}
@@ -239,19 +204,11 @@ public class Robot extends TimedRobot {
 		else if (state == 5) {
 			if (currentDistance < 6000) {
 				driveTrain.drive.arcadeDrive(driveToFeet(6000), turnToAngle(0));
-				//elevatorPID.setSetpoint(300);
 				elevator.elevatorMove(-.6f);
 			} else {
 				state = 7;
 				time = Timer.getFPGATimestamp();
 			}
-//		} //else if (state == 6) {
-//			currentUltrasonic = ai.getValue();
-//			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
-//				driveTrain.drive.arcadeDrive(driveToFeet(.25), turnToAngle(0));
-//			} else {
-//				state = 7;
-//			}
 		} else if (state == 7) {
 			if (Timer.getFPGATimestamp() < time + 2) {
 				intake.startYeet();
@@ -311,13 +268,6 @@ public class Robot extends TimedRobot {
 				state = 7;
 				time = Timer.getFPGATimestamp();
 			}
-//		} else if (state == 6) {
-//			currentUltrasonic = ai.getValue();
-//			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
-//				driveTrain.drive.arcadeDrive(driveToFeet(.25), turnToAngle(0));
-//			} else {
-//				state = 7;
-//			}
 		} else if (state == 7) {
 			if (Timer.getFPGATimestamp() < time + .4) {
 				intake.startYeet();
@@ -372,7 +322,6 @@ public class Robot extends TimedRobot {
 		RobotMap.evelator.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		RobotMap.evelator.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 10);
 		RobotMap.evelator.setSelectedSensorPosition(0, 0, 0);
-		//new ArmsDown();
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
@@ -383,10 +332,6 @@ public class Robot extends TimedRobot {
 		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
 		
 		initTime = Timer.getFPGATimestamp();
-		
-//		if (dashData > 2) {
-//			state = 0;
-//		}
 		
 		time = Timer.getFPGATimestamp();
 		ahrs.reset();
@@ -464,16 +409,9 @@ public class Robot extends TimedRobot {
 				driveTrain.drive.arcadeDrive(driveToFeet(8405), turnToAngle(0));
 				elevatorPID.setSetpoint(300);
 			} else {
-				state = 6;
-				time = Timer.getFPGATimestamp();
-			}
-		} else if (state == 6) {
-			currentUltrasonic = ai.getValue();
-			if (currentUltrasonic < 30) { //Change this to the actual distance it should be
-				driveTrain.drive.arcadeDrive(.25, turnToAngle(0));
-			} else {
 				state = 7;
-			}
+				time = Timer.getFPGATimestamp();
+			} 
 		} else if (state == 7) {
 			if (Timer.getFPGATimestamp() < time + .4) {
 				intake.startYeet();
@@ -612,7 +550,6 @@ public class Robot extends TimedRobot {
 				time = Timer.getFPGATimestamp();
 			}
 		} else if (state == 4) {
-//			elevatorPID.setSetpoint(1000); //Change to what it should actually be
 			if (Timer.getFPGATimestamp() < time + .5) {
 				elevator.elevatorMove(-.7f);
 			} else {
