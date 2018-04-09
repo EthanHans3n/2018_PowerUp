@@ -335,6 +335,8 @@ public class Robot extends TimedRobot {
 		
 		time = Timer.getFPGATimestamp();
 		ahrs.reset();
+		
+		state = 1;
 	}
 
 	/**
@@ -344,13 +346,16 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		
-		if (Timer.getFPGATimestamp() < initTime + 10 && Timer.getFPGATimestamp() > initTime + 4){
+		if (Timer.getFPGATimestamp() < initTime + 11 && Timer.getFPGATimestamp() > initTime + 4){
 			RobotMap.armVert.set(1);
 		} else {
 			RobotMap.armVert.stopMotor();
 		}
 		
 		cross();
+		
+		System.out.println(ahrs.getAngle());
+		System.out.println(RobotMap.motorBR.getSelectedSensorPosition(0));
 		
 //		if (cross) {
 //			System.out.println("cross");
