@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4043.robot.subsystems;
 
+import org.usfirst.frc.team4043.robot.Robot;
 import org.usfirst.frc.team4043.robot.RobotMap;
 import org.usfirst.frc.team4043.robot.commands.Drive;
 
@@ -35,16 +36,21 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void drive(double left, double right) {
-		drive.tankDrive(left, right);
-//		drive.arcadeDrive(left, right);
+		if (Robot.driveType) {
+			drive.arcadeDrive(left, right);
+		} else {
+			drive.tankDrive(left, right);
+		}
 	}
 	
 	public void drive(Joystick joy) {
-		inputSpeed = -joy.getRawAxis(1);
-		//inputTurn = -joy.getRawAxis(4); //For arcade drive
-		
-		inputTurn = joy.getRawAxis(5);	//For tank drive
-		
+		if (Robot.driveType) {				//for arcade
+			inputSpeed = -joy.getRawAxis(1);
+			inputTurn = -joy.getRawAxis(4);
+		} else {							//for tank
+			inputSpeed = -joy.getRawAxis(1);
+			inputTurn = joy.getRawAxis(5);
+		}
 		drive(inputSpeed, -inputTurn);
 	}
 	

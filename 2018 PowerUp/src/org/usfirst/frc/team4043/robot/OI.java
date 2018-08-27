@@ -62,7 +62,7 @@ public class OI {
 	public Button yeetStart = new JoystickButton(driveStick, 6);
 	public Button intakeStart  = new JoystickButton(driveStick, 5);
 	public Button keepCube = new JoystickButton(driveStick, 1);
-	public Button shifter = new JoystickButton(driveStick, 2);
+	//public Button shifter = new JoystickButton(driveStick, 2);
 	
 	public Button armsUp = new JoystickButton(coStick, 2);
 	public Button armsDown = new JoystickButton(coStick, 1);
@@ -82,7 +82,7 @@ public class OI {
 		armsDown.whenReleased(new StopArms());
 		
 		keepCube.whenPressed(new OperationKeapDaKewb());
-		shifter.toggleWhenPressed(new Shift());
+//		shifter.toggleWhenPressed(new Shift());
 	}
 	
 	public Joystick getDriveStick() {

@@ -221,7 +221,7 @@ public class Robot extends TimedRobot {
 	
 	public void ds2R() {
 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
-		double currentAngle = ahrs.getAngle(); 
+		double currentAngle = ahrs.getAngle();
 	
 		if (state == 0) {
 			if (Timer.getFPGATimestamp() < time + 3) {
@@ -297,6 +297,8 @@ public class Robot extends TimedRobot {
 	boolean ds2;
 	boolean ds3;
 	
+	public static boolean driveType;
+	
 	@Override
 	public void autonomousInit() {
 		m_autonomousCommand = m_chooser.getSelected();
@@ -325,8 +327,8 @@ public class Robot extends TimedRobot {
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
-		cross = SmartDashboard.getBoolean("DB/Button 0", false);
-		ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
+		//cross = SmartDashboard.getBoolean("DB/Button 0", false);
+		//ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
 		ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
 		ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
 		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
@@ -371,7 +373,6 @@ public class Robot extends TimedRobot {
 //			ds3R();
 //		}
 	}
-	
 	
 	
 	public void ds1L() {
@@ -668,6 +669,8 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand.cancel();
 		}
 		
+		driveType = SmartDashboard.getBoolean("DB/Button 1", false);
+		
 		RobotMap.armVert.set(0);
 	}
 	
@@ -677,6 +680,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		System.out.println("drive mode is: " + driveType);
 		
 		if (Robot.m_oi.coStick.getRawAxis(3) > .1) {
     		//Move elevator up at speed of right trigger
