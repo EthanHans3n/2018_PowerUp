@@ -32,7 +32,7 @@ public class DriveTrain extends Subsystem {
     	RobotMap.motorBR.setSafetyEnabled(false);
     	RobotMap.motorFL.setSafetyEnabled(false);
     	RobotMap.motorBL.setSafetyEnabled(false);
-    	drive.setSafetyEnabled(flase);
+    	drive.setSafetyEnabled(false);
 	}
 	
 	public void drive(double left, double right) {
@@ -44,12 +44,23 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void drive(Joystick joy) {
+		
 		if (Robot.driveType) {				//for arcade
-			inputSpeed = -joy.getRawAxis(1);
-			inputTurn = -joy.getRawAxis(4);
+			if (Robot.luccaMode) {			// If lucca mode is enabled it modifies the speed in relation to the slider pos
+				inputSpeed = -joy.getRawAxis(1) * (Robot.luccaSpeed / 5);
+				inputTurn = -joy.getRawAxis(4);
+			} else {
+				inputSpeed = -joy.getRawAxis(1);
+				inputTurn = -joy.getRawAxis(4);
+			}
 		} else {							//for tank
-			inputSpeed = -joy.getRawAxis(1);
-			inputTurn = joy.getRawAxis(5);
+			if (Robot.luccaMode) {			// If lucca mode is enabled it modifies the speed in relation to the slider pos
+				inputSpeed = -joy.getRawAxis(1) * (Robot.luccaSpeed / 5);
+				inputTurn = joy.getRawAxis(5) * (Robot.luccaSpeed / 5);
+			} else {
+				inputSpeed = -joy.getRawAxis(1);
+				inputTurn = joy.getRawAxis(5);
+			}
 		}
 		drive(inputSpeed, -inputTurn);
 	}

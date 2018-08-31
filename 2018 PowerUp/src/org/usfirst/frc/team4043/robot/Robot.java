@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the build.properties file in the
  * project.
  */
+
 public class Robot extends TimedRobot {
 	public static DriveTrain driveTrain;
 	public static Intake intake;
@@ -42,6 +43,8 @@ public class Robot extends TimedRobot {
 	public static Elevator elevator;
 	public static Shifter shifter;
 	public static OI m_oi;
+	public static SendableChooser<Boolean> driveTypeChooser = new SendableChooser<Boolean>();
+	public static SendableChooser<Boolean> luccaModeChooser = new SendableChooser<Boolean>();
 	
 	public static double initTime = 0;
 	int state = 1;
@@ -66,7 +69,18 @@ public class Robot extends TimedRobot {
 		elevator = new Elevator();
 		shifter = new Shifter();
 		m_oi = new OI();
-		SmartDashboard.putData("Auto mode", m_chooser);
+		
+		SmartDashboard.putData("Auto mode", m_chooser);				// Old dashboard attempt? Can this be disabled?
+		SmartDashboard.putBoolean("Lucca Mode", luccaMode);			// adding all the fancy dashboard stuff
+		SmartDashboard.putNumber("Lucca Speed Value", luccaSpeed);
+		SmartDashboard.putString("Drive Type", driveTypeString);
+		SmartDashboard.putData("Lucca Mode Chooser", luccaModeChooser);
+		SmartDashboard.putData("Drive Type Selector", driveTypeChooser);
+		luccaModeChooser.addDefault("Lucca Mode: Off", false);
+		luccaModeChooser.addObject("Lucca Mode: On", true);
+		driveTypeChooser.addDefault("Drive Type: Arcade Drive", true);
+		driveTypeChooser.addObject("Drive Type: Tank Drive", false);
+		
 	}
 
 	/**
@@ -74,14 +88,17 @@ public class Robot extends TimedRobot {
 	 * You can use it to reset any subsystem information you want to clear when
 	 * the robot is disabled.
 	 */
+	
 	@Override
 	public void disabledInit() {
-
+		updateDriveType();
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		
+		updateDriveType();
 	}
 
 	/**
@@ -135,6 +152,24 @@ public class Robot extends TimedRobot {
 		}
 		
 		return driveSpeed;
+	}
+	
+	boolean driveTypeNew;
+	void updateDriveType() {
+		luccaMode = luccaModeChooser.getSelected();
+		SmartDashboard.putBoolean("Lucca Mode", luccaMode);
+		luccaSpeed = SmartDashboard.getNumber("Lucca Speed Value", 100);
+		driveTypeNew = driveTypeChooser.getSelected();
+		if (driveType != driveTypeNew) {
+			driveType = driveTypeNew;
+			if (driveType) {
+				driveTypeString = "Arcade Drive";
+			} else {
+				driveTypeString = "Tank Drive";
+			}
+			SmartDashboard.putString("Drive Type", driveTypeString);
+			SmartDashboard.updateValues();
+		}	
 	}
 	
 	public void autoTest() {
@@ -292,12 +327,16 @@ public class Robot extends TimedRobot {
 		}
 	}
 	
-	boolean cross;
-	boolean ds1;
-	boolean ds2;
-	boolean ds3;
+	//boolean cross;
+	//boolean ds1;
+	//boolean ds2;
+	//boolean ds3;
 	
 	public static boolean driveType;
+	public static double luccaSpeed = 100;
+	public static boolean luccaMode;
+	
+	String driveTypeString = "Not Set";
 	
 	@Override
 	public void autonomousInit() {
@@ -329,9 +368,9 @@ public class Robot extends TimedRobot {
 		
 		//cross = SmartDashboard.getBoolean("DB/Button 0", false);
 		//ds1 = SmartDashboard.getBoolean("DB/Button 1", false);
-		ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
-		ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
-		double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
+		//ds2 = SmartDashboard.getBoolean("DB/Button 2", false);
+		//ds3 = SmartDashboard.getBoolean("DB/Button 3", false);
+		//double dashData = SmartDashboard.getNumber("DB/Slider 0", 0.0);
 		
 		initTime = Timer.getFPGATimestamp();
 		
@@ -344,9 +383,12 @@ public class Robot extends TimedRobot {
 	/**
 	 * This function is called periodically during autonomous.
 	 */
+	
 	@Override
-	public void autonomousPeriodic() {
+	public void autonomousPeriodic() {		
 		Scheduler.getInstance().run();
+		
+		updateDriveType();
 		
 		if (Timer.getFPGATimestamp() < initTime + 11 && Timer.getFPGATimestamp() > initTime + 4){
 			RobotMap.armVert.set(1);
@@ -373,7 +415,6 @@ public class Robot extends TimedRobot {
 //			ds3R();
 //		}
 	}
-	
 	
 	public void ds1L() {
 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
@@ -440,6 +481,7 @@ public class Robot extends TimedRobot {
 			}
 		}
 	}
+	
 	public void ds3R() {
 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 		double currentAngle = ahrs.getAngle();
@@ -506,8 +548,6 @@ public class Robot extends TimedRobot {
 		}
 	}
 	
-	
-	
 	public void cross() {
 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
 
@@ -524,7 +564,6 @@ public class Robot extends TimedRobot {
 			}
 		}
 	}
-	
 	
 	public void ds1cL() { //driver station 1 scale left
 		double currentDistance = RobotMap.motorBR.getSelectedSensorPosition(0);
@@ -669,8 +708,6 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand.cancel();
 		}
 		
-		driveType = SmartDashboard.getBoolean("DB/Button 1", false);
-		
 		RobotMap.armVert.set(0);
 	}
 	
@@ -681,7 +718,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		System.out.println("drive mode is: " + driveType);
+		updateDriveType();
 		
 		if (Robot.m_oi.coStick.getRawAxis(3) > .1) {
     		//Move elevator up at speed of right trigger

@@ -15,10 +15,12 @@ public class Intake extends Subsystem {
     	RobotMap.intakeL.set(-.6);
     	RobotMap.intakeR.set(.6);
     }
+    
     public void startYeet(){
     	RobotMap.intakeL.set(1);
     	RobotMap.intakeR.set(-1);
     }
+    
     public void keepCube() {
     	RobotMap.intakeL.set(-.5);
         RobotMap.intakeR.set(.5);
